@@ -18,7 +18,7 @@ const getFormControl = (classes) => {
                     {tempData.map((data, idx) => (
                         <FormControlLabel
                             key={data}
-                            control={<Checkbox noWrap checked={false} name={data} />}
+                            control={<Checkbox checked={false} name={String(data)} />}
                             label={<Typography className={classes.checkbox} noWrap>{"subasdasdasdqw"}</Typography>}
                             color="primary"
                         />

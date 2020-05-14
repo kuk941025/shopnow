@@ -5,10 +5,11 @@ import Grey from "@material-ui/core/colors/grey";
 import Stepper from "@material-ui/core/Stepper";
 import Step from "@material-ui/core/Step";
 import StepLabel from "@material-ui/core/StepLabel"
-import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import AgeGender from "./AgeGender";
 import Category from "./Category";
+import Strings from "../../libs/strings";
+import { localString } from "../../libs/utils";
 
 const getSteps = () => {
     return ['Step 1', 'Step 2'];
@@ -21,7 +22,7 @@ const Settings = () => {
         <div className={classes.root}>
             <Container maxWidth="sm" className={classes.container}>
                 <Stepper activeStep={steps} className={classes.stepper}>
-                    {tempSteps.map(step => (
+                    {localString(Strings.settings_steps).map(step => (
                         <Step key={step}>
                             <StepLabel >{step}</StepLabel>
                         </Step>
@@ -40,7 +41,7 @@ const Settings = () => {
                             variant="contained"
                             className={classes.button}
                             disableElevation>
-                            Next
+                            {localString(Strings.settings_next)}
                     </Button>
                     }
                     {steps === 1 &&
@@ -51,7 +52,7 @@ const Settings = () => {
                                 disableElevation
                                 onClick={() => setSteps(steps - 1)}
                             >
-                                Previous
+                                {localString(Strings.settings_prev)}
                             </Button>
                             <Button
                                 className={classes.button}
@@ -59,7 +60,7 @@ const Settings = () => {
                                 disableElevation
                                 color="primary"
                             >
-                                Next
+                                {localString(Strings.settings_complete)}
                             </Button>
                         </>
                     }

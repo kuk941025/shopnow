@@ -4,7 +4,8 @@ import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import Typography from "@material-ui/core/Typography";
 import Slider from "./SliderCss";
-
+import Strings from "../../libs/strings";
+import { localString } from "../../libs/utils";
 
 const AgeGender = () => {
     const classes = useStyles();
@@ -12,23 +13,23 @@ const AgeGender = () => {
     return (
         <div className={classes.root}>
             <Typography variant="body1" className={classes.title} gutterBottom>
-                Gender
+                {localString(Strings.settings_gender)}
             </Typography>
             <ToggleButtonGroup
                 exclusive
                 value=""
             >
                 <ToggleButton value="male" className={classes.toggleButton}>
-                    Male
+                    {localString(Strings.settings_male)}
                 </ToggleButton>
                 <ToggleButton value="female" className={classes.toggleButton}>
-                    Female
+                    {localString(Strings.settings_female)}
                 </ToggleButton>
             </ToggleButtonGroup>
 
             <div className={classes.ageRoot}>
                 <Typography variant="body1" align="center" gutterBottom className={classes.title}>
-                    Age
+                    {localString(Strings.settings_age)}
                 </Typography>
 
                 <Slider
