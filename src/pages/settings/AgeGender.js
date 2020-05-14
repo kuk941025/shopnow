@@ -5,15 +5,7 @@ import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import Typography from "@material-ui/core/Typography";
 import Slider from "./SliderCss";
 
-const getMarks = () => {
-    let marks = [];
-    for (let i = 10; i <= 100; i += 5) {
-        marks.push({ value: i, label: String(i) })
-    }
 
-    console.log(marks);
-    return marks;
-}
 const AgeGender = () => {
     const classes = useStyles();
 
