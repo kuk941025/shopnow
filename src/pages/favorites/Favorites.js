@@ -6,15 +6,21 @@ import URLs from "../../libs/urls";
 
 let productItems = [];
 const setProductItems = () => {
-    for (let i = 0; i < 10; i++) productItems.push(i);
+    for (let i = 0; i < 20; i++) {
+        productItems.push({
+            loading: i % 2 === 0 ? true : false,
+            name: 'Product Name ' + i,
+            price: '1500'
+        });
+    }
 }
 setProductItems();
 
-const Favorites = ({history}) => {
+const Favorites = ({ history }) => {
     return (
         <Grid container spacing={3}>
             {productItems.map((item, idx) => (
-                <ProductItem onClick={() => history.push(`${URLs.ProductDetail}?product_id=${idx}`)} key={idx} />
+                <ProductItem data={item} onClick={() => history.push(`${URLs.ProductDetail}?product_id=${idx}`)} key={idx} />
             ))}
         </Grid>
     )
