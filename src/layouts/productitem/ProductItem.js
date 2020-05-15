@@ -15,7 +15,7 @@ const ProductItem = () => {
             <Card className={classes.root}>
                 <CardActionArea>
                     <div variant="body1" className={classes.imgRoot}>
-                        <img className={classes.img} src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/169963/photo-1429043794791-eb8f26f44081.jpeg" />
+                        <img alt="product_img" className={classes.img} src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/169963/photo-1429043794791-eb8f26f44081.jpeg" />
                         <Typography component="span" className={classes.titleRoot} >
                             Product Name
                     </Typography>
@@ -25,7 +25,7 @@ const ProductItem = () => {
                     <div>
                         <Typography variant="body1" style={{ fontWeight: 600 }}>
                             Price
-                            </Typography>
+                        </Typography>
                         <IconButton>
                             <FavoriteIcon />
                         </IconButton>

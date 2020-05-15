@@ -93,6 +93,7 @@ const useStyles = makeStyles(theme => ({
     button: {
         flex: 1,
         borderRadius: 0,
+        height: 50, 
     }
 }))
 export default Settings
