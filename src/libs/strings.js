@@ -9,6 +9,11 @@ const Strings = {
     settings_steps: [
         ["Info", "Category"],
         ["정보", "카테고리"]
+    ],
+    search_placeholder: ["Search", "검색"],
+    drawer_items: [
+        ["Settings", "Favorites"],
+        ["설정", "즐겨찾기"]
     ]
 }
 

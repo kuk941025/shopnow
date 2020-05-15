@@ -11,13 +11,10 @@ import Category from "./Category";
 import Strings from "../../libs/strings";
 import { localString } from "../../libs/utils";
 
-const getSteps = () => {
-    return ['Step 1', 'Step 2'];
-}
+
 const Settings = () => {
     const classes = useStyles();
     const [steps, setSteps] = useState(0);
-    const tempSteps = getSteps();
     return (
         <div className={classes.root}>
             <Container maxWidth="sm" className={classes.container}>

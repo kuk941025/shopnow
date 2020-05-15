@@ -1,4 +1,4 @@
-import { withStyles, useTheme } from "@material-ui/core/styles";
+import { withStyles } from "@material-ui/core/styles";
 import Slider from "@material-ui/core/Slider";
 
 const PrettoSlider = withStyles({
