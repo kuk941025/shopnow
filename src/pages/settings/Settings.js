@@ -12,7 +12,7 @@ import Strings from "../../libs/strings";
 import { localString } from "../../libs/utils";
 
 
-const Settings = () => {
+const Settings = ({ history }) => {
     const classes = useStyles();
     const [steps, setSteps] = useState(0);
     return (
@@ -39,7 +39,7 @@ const Settings = () => {
                             className={classes.button}
                             disableElevation>
                             {localString(Strings.settings_next)}
-                    </Button>
+                        </Button>
                     }
                     {steps === 1 &&
                         <>
@@ -56,6 +56,7 @@ const Settings = () => {
                                 variant="contained"
                                 disableElevation
                                 color="primary"
+                                onClick={() => history.push("/main")}
                             >
                                 {localString(Strings.settings_complete)}
                             </Button>
@@ -91,7 +92,7 @@ const useStyles = makeStyles(theme => ({
     },
     button: {
         flex: 1,
-        borderRadius: 0, 
+        borderRadius: 0,
     }
 }))
 export default Settings

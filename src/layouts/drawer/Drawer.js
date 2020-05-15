@@ -14,13 +14,21 @@ import FavoriteIcon from "@material-ui/icons/Favorite";
 import Divider from "@material-ui/core/Divider";
 import { localString } from "../../libs/utils";
 import Strings from "../../libs/strings";
+import { withRouter } from "react-router-dom";
 
 const getIcon = (idx) => {
     if (idx === 0) return <SettingsIcon />
     else return <FavoriteIcon />
 }
-const Drawer = ({ onToggle, mobileOpen }) => {
+
+const Drawer = ({ onToggle, mobileOpen, history }) => {
     const classes = useStyles();
+    
+    const onListItemClicked = (idx) => {
+        if (idx === 0) history.push("/");
+        else if (idx === 1) history.push("/favorites");
+    }
+
     const getDrawer = () => {
         return (
             <div className={classes.drawerContents}>
@@ -37,7 +45,7 @@ const Drawer = ({ onToggle, mobileOpen }) => {
                     <Divider variant="middle" className={classes.divider} />
                     <List>
                         {localString(Strings.drawer_items).map((item, idx) => (
-                            <ListItem button key={item}>
+                            <ListItem onClick={() => onListItemClicked(idx)} button key={item}>
                                 <ListItemIcon>{getIcon(idx)}</ListItemIcon>
                                 <ListItemText primary={item} />
                             </ListItem>
@@ -94,16 +102,10 @@ const useStyles = makeStyles(theme => ({
         backgroundColor: 'white',
         height: '100%',
     },
-    list: {
-        color: Grey['300'],
-    },
     listItem: {
         "&:hover": {
             backgroundColor: '#2f3e52'
         }
-    },
-    divider: {
-        backgroundColor: Grey['300'],
     },
     drawer: {
         [theme.breakpoints.up('sm')]: {
@@ -127,4 +129,4 @@ const useStyles = makeStyles(theme => ({
         margin: `${theme.spacing(3)}px 0px`
     }
 }))
-export default Drawer;
+export default withRouter(Drawer);
