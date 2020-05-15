@@ -11,7 +11,11 @@ function App() {
       <Router>
         <Switch>
           <Route exact path={URLs.Settings} component={Settings} />
-          <Route exact path={URLs.Main} component={Main} />
+          <Route path={URLs.Main} component={Main} />
+          <Route path={URLs.Favorites} component={Main} />
+          <Route path={URLs.Search} component={Main} />
+          <Route path={URLs.ProductDetail} component={Main} />
+          <Route component={Main} />
         </Switch>
       </Router>
     </div>

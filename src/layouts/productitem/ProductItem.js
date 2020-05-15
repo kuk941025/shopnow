@@ -8,17 +8,18 @@ import IconButton from "@material-ui/core/IconButton";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 
 const tempCategory = ["Category1", "Category2", "Category3"];
-const ProductItem = () => {
+const ProductItem = ({ onClick, onFavClick }) => {
     const classes = useStyles();
     return (
         <Grid item xs={12} sm={6} xl={3}>
             <Card className={classes.root}>
-                <CardActionArea>
+                <CardActionArea onClick={onClick}>
                     <div variant="body1" className={classes.imgRoot}>
-                        <img alt="product_img" className={classes.img} src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/169963/photo-1429043794791-eb8f26f44081.jpeg" />
+                        <img alt="product_img" className={classes.img}
+                            src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/169963/photo-1429043794791-eb8f26f44081.jpeg" />
                         <Typography component="span" className={classes.titleRoot} >
                             Product Name
-                    </Typography>
+                        </Typography>
                     </div>
                 </CardActionArea>
                 <div className={classes.contentRoot}>
@@ -27,7 +28,7 @@ const ProductItem = () => {
                             Price
                         </Typography>
                         <IconButton>
-                            <FavoriteIcon />
+                            <FavoriteIcon className={classes.icon} />
                         </IconButton>
                     </div>
                     <div >
@@ -65,7 +66,7 @@ const useStyles = makeStyles(theme => ({
         padding: theme.spacing(1),
         color: 'white',
         fontWeight: 600,
-        backgroundColor: 'green',
+        backgroundColor: theme.palette.primary.main,
         fontSize: '1.1rem'
     },
     contentRoot: {
@@ -80,6 +81,9 @@ const useStyles = makeStyles(theme => ({
     },
     category: {
         fontSize: '0.9rem'
+    },
+    icon: {
+        color: theme.palette.secondary.light
     }
 }))
 export default ProductItem;

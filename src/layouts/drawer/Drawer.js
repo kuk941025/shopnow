@@ -11,22 +11,26 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import SettingsIcon from "@material-ui/icons/Settings";
 import FavoriteIcon from "@material-ui/icons/Favorite";
+import ThumbUpIcon from "@material-ui/icons/ThumbUp";
 import Divider from "@material-ui/core/Divider";
 import { localString } from "../../libs/utils";
 import Strings from "../../libs/strings";
 import { withRouter } from "react-router-dom";
+import URLs from "../../libs/urls";
 
 const getIcon = (idx) => {
-    if (idx === 0) return <SettingsIcon />
-    else return <FavoriteIcon />
+    if (idx === 0) return <ThumbUpIcon />
+    else if (idx === 1) return <FavoriteIcon />
+    else return <SettingsIcon />
 }
 
 const Drawer = ({ onToggle, mobileOpen, history }) => {
     const classes = useStyles();
-    
+
     const onListItemClicked = (idx) => {
-        if (idx === 0) history.push("/");
-        else if (idx === 1) history.push("/favorites");
+        if (idx === 0) history.push(URLs.Main);
+        else if (idx === 1) history.push(URLs.Favorites);
+        else history.push(URLs.Settings);
     }
 
     const getDrawer = () => {

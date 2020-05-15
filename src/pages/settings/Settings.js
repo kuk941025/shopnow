@@ -56,7 +56,7 @@ const Settings = ({ history }) => {
                                 variant="contained"
                                 disableElevation
                                 color="primary"
-                                onClick={() => history.push("/main")}
+                                onClick={() => history.push("/recommends")}
                             >
                                 {localString(Strings.settings_complete)}
                             </Button>

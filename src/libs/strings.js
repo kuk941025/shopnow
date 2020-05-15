@@ -12,9 +12,10 @@ const Strings = {
     ],
     search_placeholder: ["Search", "검색"],
     drawer_items: [
-        ["Settings", "Favorites"],
-        ["설정", "즐겨찾기"]
-    ]
+        ["Recommends", "Favorites", "Settings"],
+        ["추천", "즐겨찾기", "설정"]
+    ],
+    error_wrong_url: ["Wrong URL", "잘못된 URL입니다."]
 }
 
 export default Strings;
