@@ -15,7 +15,10 @@ const Strings = {
         ["Recommends", "Favorites", "Settings"],
         ["추천", "즐겨찾기", "설정"]
     ],
-    error_wrong_url: ["Wrong URL", "잘못된 URL입니다."]
+    error_wrong_url: ["Wrong URL", "잘못된 URL입니다."],
+    detail_favorite: ["Favorite", "즐겨찾기"],
+    detail_next_items: ["Next Items", "다음 아이템"],
+
 }
 
 export default Strings;

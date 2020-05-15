@@ -8,6 +8,9 @@ import classNames from 'classnames';
 import SwipeableViews from "react-swipeable-views";
 import Button from "@material-ui/core/Button";
 import { DrawerWidth } from "../../libs/const";
+import Strings from "../../libs/strings";
+import { localString } from "../../libs/utils";
+
 const tempCategory = ["Category1", "Category2", "Category3"];
 
 
@@ -78,7 +81,7 @@ const Detail = ({ location }) => {
                     ))}
                 </div>
                 <Typography varaint="body1" className={classes.nextItems}>
-                    Next Items
+                    {localString(Strings.detail_next_items)}
                 </Typography>
                 <SwipeableViews className={classes.nextItems} enableMouseEvents>
                     {tempCategory.map(category => (
@@ -93,11 +96,11 @@ const Detail = ({ location }) => {
                 </SwipeableViews>
                 {drawerVisible ?
                     <Button color="primary" fullWidth className={classes.btnNoDrawer} variant="contained" disableElevation>
-                        Favorite
+                        {localString(Strings.detail_favorite)}
                     </Button>
                     :
                     <Button color="primary" className={classes.btnDrawer} variant="contained" disableElevation>
-                        Favorite
+                        {localString(Strings.detail_favorite)}
                     </Button>
                 }
 
