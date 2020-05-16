@@ -10,7 +10,9 @@ import Search from "../search/Search";
 import NotFound from "../notfound/NotFound";
 import URLs from "../../libs/urls";
 import LangDialog from "../../layouts/langdialog/LangDialog";
+import HistoryPopper from "../../layouts/history_popper/HistoryPopper";
 import { MainClickType } from "./MainConst";
+
 
 let productItems = [];
 const setProductItems = () => {
@@ -23,6 +25,7 @@ const Main = ({ location }) => {
     const classes = useStyles();
     const [mobileOpen, setMobileOpen] = useState(false);
     const [langDialog, setLangDialog] = useState(false);
+    const [anchorEl, setAnchorEl] = useState(null);
 
     const getContents = () => {
         switch (true) {
@@ -48,6 +51,10 @@ const Main = ({ location }) => {
                 setLangDialog(!langDialog);
                 break;
             case MainClickType.noti:
+                setAnchorEl(Boolean(anchorEl) ? null : action.data);
+                break;
+            case MainClickType.closeNoti:
+                setAnchorEl(null);
                 break;
             default:
         }
@@ -57,14 +64,15 @@ const Main = ({ location }) => {
 
             <Toolbar onClick={handleClick} />
             <Drawer onClick={handleClick} mobileOpen={mobileOpen} />
+
             <main className={classes.content}>
                 <div className={classes.toolbar} />
                 {getContents()}
             </main>
 
-
+            <HistoryPopper onClick={handleClick} anchorEl={anchorEl} />
             <LangDialog open={langDialog} onClose={() => setLangDialog(false)} />
-        </div>
+        </div >
     )
 }
 

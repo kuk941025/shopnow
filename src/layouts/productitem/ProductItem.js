@@ -53,7 +53,7 @@ const ProductItem = ({ onClick, onFavClick, data }) => {
                             <div >
                                 {tempCategory.map((category, idx) => (
                                     <React.Fragment key={idx} >
-                                        <Typography variant="body1" className={classes.category}>
+                                        <Typography variant="body1" noWrap className={classes.category}>
                                             {category}
                                         </Typography>
                                         <Typography className={classes.category} variant="body1" style={{ padding: `0px 4px` }}>

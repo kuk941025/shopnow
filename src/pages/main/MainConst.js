@@ -1,5 +1,6 @@
 export const MainClickType = {
     Toggle: "MainToggle",
     lang: "MainLangDialog",
-    noti: "MainNotification"
+    noti: "MainNotification",
+    closeNoti: "MainCloseNotification",
 }
