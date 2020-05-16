@@ -18,6 +18,7 @@ import Strings from "../../libs/strings";
 import { withRouter } from "react-router-dom";
 import URLs from "../../libs/urls";
 import { MainClickType } from "../../pages/main/MainConst";
+import Chip from "@material-ui/core/Chip";
 
 const getIcon = (idx) => {
     if (idx === 0) return <ThumbUpIcon />
@@ -27,7 +28,7 @@ const getIcon = (idx) => {
 
 const Drawer = ({ mobileOpen, history, onClick }) => {
     const classes = useStyles();
-    
+
     const onListItemClicked = (idx) => {
         if (idx === 0) history.push(URLs.Main);
         else if (idx === 1) history.push(URLs.Favorites);
@@ -44,9 +45,17 @@ const Drawer = ({ mobileOpen, history, onClick }) => {
                     <Typography variant="body1" gutterBottom>
                         Gender
                     </Typography>
-                    <List className={classes.list}>
-
-                    </List>
+                    <div className={classes.categoryRoot}>
+                        <Chip label="category 1" variant="outlined" />
+                        <Chip label="category 1" variant="outlined" />
+                        <Chip label="category 1" variant="outlined" />
+                        <Chip label="category 1" variant="outlined" />
+                        <Chip label="category 1" variant="outlined" />
+                        <Chip label="category 1" variant="outlined" />
+                        <Chip label="category 1" variant="outlined" />
+                        <Chip label="category 1" variant="outlined" />
+                        <Chip label="category 1" variant="outlined" />
+                    </div>
                     <Divider variant="middle" className={classes.divider} />
                     <List>
                         {localString(Strings.drawer_items).map((item, idx) => (
@@ -125,10 +134,18 @@ const useStyles = makeStyles(theme => ({
     title: {
         fontWeight: 600,
     },
-    list: {
+    categoryRoot: {
         height: 125,
-        border: `.75px solid ${Grey['300']}`,
+        overflow: 'auto',
+        border: `.5px solid ${Grey['200']}`,
         marginTop: theme.spacing(2),
+        alignItems: 'center',
+        justifyContent: 'space-evenly',
+        flexWrap: 'wrap',
+        display: 'flex',  
+        '& > *': {
+            margin: `${theme.spacing(0.5)}px 0px`,
+        },
     },
     divider: {
         margin: `${theme.spacing(3)}px 0px`
