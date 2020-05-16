@@ -9,6 +9,7 @@ import Detail from "../detail/Detail";
 import Search from "../search/Search";
 import NotFound from "../notfound/NotFound";
 import URLs from "../../libs/urls";
+import LangDialog from "../../layouts/langdialog/LangDialog";
 
 let productItems = [];
 const setProductItems = () => {
@@ -19,6 +20,7 @@ setProductItems();
 const Main = ({ location }) => {
     const classes = useStyles();
     const [mobileOpen, setMobileOpen] = useState(false);
+    const [langDialog, setLangDialog] = useState(false);
 
     const getContents = () => {
         switch (true) {
@@ -38,13 +40,14 @@ const Main = ({ location }) => {
     return (
         <div className={classes.root}>
 
-            <Toolbar onToggle={() => setMobileOpen(!mobileOpen)} />
+            <Toolbar onToggle={() => setMobileOpen(!mobileOpen)} onLangDialog={() => setLangDialog(true)} />
             <Drawer onToggle={() => setMobileOpen(!mobileOpen)} mobileOpen={mobileOpen} />
             <main className={classes.content}>
                 <div className={classes.toolbar} />
                 {getContents()}
             </main>
 
+            <LangDialog open={langDialog} onClose={() => setLangDialog(false)} />
         </div>
     )
 }

@@ -28,7 +28,7 @@ const ProductItem = ({ onClick, onFavClick, data }) => {
         )
     }
     return (
-        <Grid item xs={12} sm={6} xl={3}>
+        <Grid item xs={12} sm={6} md={4} xl={3}>
             <Card className={classes.root}>
                 {data.loading ? <ShowSkeleton /> :
                     <>

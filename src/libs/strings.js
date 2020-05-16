@@ -10,15 +10,30 @@ const Strings = {
         ["Info", "Category"],
         ["정보", "카테고리"]
     ],
+
     search_placeholder: ["Search", "검색"],
+    
     drawer_items: [
         ["Recommends", "Favorites", "Settings"],
         ["추천", "즐겨찾기", "설정"]
     ],
+    
     error_wrong_url: ["Wrong URL", "잘못된 URL입니다."],
+    
     detail_favorite: ["Favorite", "즐겨찾기"],
     detail_next_items: ["Next Items", "다음 아이템"],
+    
     item_won: ["Won", "원"],
+
+    lang_title: ["Set default language", "언어를 선택해주세요."],
+    lang_cancel: ["Cancel", "취소"],
+    lang_confirm: ["Confirm", "확인"],
+    lang_languages: [
+        ["English", "Korean"],
+        ["영어", "한국어"]
+    ],
+    lang_language: ["Language", "언어"],
+    lang_available: ["Available Languages", "사용가능한 언어"]
 }
 
 export default Strings;

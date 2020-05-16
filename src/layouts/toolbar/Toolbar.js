@@ -9,7 +9,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import { DrawerWidth } from "../../libs/const";
 import Search from "../search/Search";
 
-const Toolbar = ({ onToggle }) => {
+const Toolbar = ({ onToggle, onLangDialog }) => {
     const classes = useStyles();
     return (
         <AppBar position="fixed" className={classes.appBar} elevation={2}>
@@ -29,7 +29,7 @@ const Toolbar = ({ onToggle }) => {
                         <IconButton>
                             <NotiIcon />
                         </IconButton>
-                        <IconButton>
+                        <IconButton onClick={onLangDialog}>
                             <LangIcon />
                         </IconButton>
                     </div>
