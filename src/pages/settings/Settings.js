@@ -92,7 +92,7 @@ const useStyles = makeStyles(theme => ({
     },
     button: {
         flex: 1,
-        borderRadius: 0,
+        borderRadius: 3,
         height: 50, 
     }
 }))

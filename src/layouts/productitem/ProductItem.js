@@ -29,7 +29,7 @@ const ProductItem = ({ onClick, onFavClick, data }) => {
     }
     return (
         <Grid item xs={12} sm={6} md={4} xl={3}>
-            <Card className={classes.root}>
+            <Card elevation={1} className={classes.root}>
                 {data.loading ? <ShowSkeleton /> :
                     <>
                         <CardActionArea onClick={onClick}>
@@ -43,8 +43,8 @@ const ProductItem = ({ onClick, onFavClick, data }) => {
                         </CardActionArea>
                         <div className={classes.contentRoot}>
                             <div>
-                                <Typography variant="body1" style={{ fontWeight: 600 }}>
-                                    {`${data.price } ${localString(Strings.item_won)}`}
+                                <Typography variant="body1" className={classes.price}>
+                                    {`${data.price} ${localString(Strings.item_won)}`}
                                 </Typography>
                                 <IconButton>
                                     <FavoriteIcon className={classes.icon} />
@@ -82,14 +82,17 @@ const useStyles = makeStyles(theme => ({
     imgRoot: {
         height: 200,
     },
+    price: {
+        color: theme.palette.primary.dark,
+    },
     titleRoot: {
         position: 'relative',
-        top: -17,
-        padding: theme.spacing(1),
-        color: 'white',
+        top: -20,
+        padding: `${theme.spacing(.5)}px ${theme.spacing(2)}px ${theme.spacing(1)}px ${theme.spacing(1)}px`,
         fontWeight: 600,
-        backgroundColor: theme.palette.primary.main,
-        fontSize: '1.1rem'
+        backgroundColor: 'white',
+        fontSize: '1.1rem',
+        borderRadius: `0px 7.5px 7.5px 0px`
     },
     contentRoot: {
         padding: `${theme.spacing(2)}px ${theme.spacing(2)}px`,

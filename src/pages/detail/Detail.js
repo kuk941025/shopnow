@@ -83,7 +83,7 @@ const Detail = ({ location }) => {
                 <Typography varaint="body1" className={classes.nextItems}>
                     {localString(Strings.detail_next_items)}
                 </Typography>
-                <SwipeableViews className={classes.nextItems} enableMouseEvents>
+                <SwipeableViews enableMouseEvents>
                     {tempCategory.map(category => (
                         <img
                             key={category}
@@ -95,7 +95,7 @@ const Detail = ({ location }) => {
                     ))}
                 </SwipeableViews>
                 {drawerVisible ?
-                    <Button color="primary" fullWidth className={classes.btnNoDrawer} variant="contained" disableElevation>
+                    <Button color="primary" fullWidth className={classes.btnNoDrawer} variant="contained" >
                         {localString(Strings.detail_favorite)}
                     </Button>
                     :
@@ -120,7 +120,7 @@ const useStyles = makeStyles(theme => ({
         [theme.breakpoints.up('md')]: {
             display: 'flex',
             alignItems: 'center',
-        }
+        },
     },
     itemDescrp: {
         [theme.breakpoints.up('md')]: {
@@ -130,6 +130,10 @@ const useStyles = makeStyles(theme => ({
     },
     img: {
         width: '100%',
+
+        [theme.breakpoints.down('md')]: {
+            paddingTop: `${theme.spacing(2)}px`,
+        },
     },
     root: {
         backgroundColor: 'white',
@@ -139,7 +143,6 @@ const useStyles = makeStyles(theme => ({
     },
     title: {
         fontWeight: 600,
-        marginTop: theme.spacing(2),
         fontSize: '1.5rem'
     },
     nextItems: {
@@ -168,7 +171,7 @@ const useStyles = makeStyles(theme => ({
         position: 'fixed',
         left: 0,
         bottom: 0,
-        borderRadius: 0,
+        borderRadius: 3,
     },
     btnDrawer: {
         [theme.breakpoints.down('md')]: {
@@ -182,7 +185,7 @@ const useStyles = makeStyles(theme => ({
             position: 'inherit',
             width: '100%'
         },
-        borderRadius: 0,
+        borderRadius: 3,
     }
 }))
 export default withRouter(Detail);
