@@ -17,6 +17,7 @@ import { localString } from "../../libs/utils";
 import Strings from "../../libs/strings";
 import { withRouter } from "react-router-dom";
 import URLs from "../../libs/urls";
+import { MainClickType } from "../../pages/main/MainConst";
 
 const getIcon = (idx) => {
     if (idx === 0) return <ThumbUpIcon />
@@ -24,9 +25,9 @@ const getIcon = (idx) => {
     else return <SettingsIcon />
 }
 
-const Drawer = ({ onToggle, mobileOpen, history }) => {
+const Drawer = ({ mobileOpen, history, onClick }) => {
     const classes = useStyles();
-
+    
     const onListItemClicked = (idx) => {
         if (idx === 0) history.push(URLs.Main);
         else if (idx === 1) history.push(URLs.Favorites);
@@ -67,7 +68,7 @@ const Drawer = ({ onToggle, mobileOpen, history }) => {
                     variant="temporary"
                     anchor="left"
                     open={mobileOpen}
-                    onClose={onToggle}
+                    onClose={() => onClick({ type: MainClickType.Toggle })}
                     classes={{
                         paper: classes.drawerPaper
                     }}
@@ -85,7 +86,7 @@ const Drawer = ({ onToggle, mobileOpen, history }) => {
                     }}
                     variant="permanent"
                     open
-                    onClose={onToggle}
+                    onClose={() => onClick({ type: MainClickType.Toggle })}
                 >
                     {getDrawer()}
                 </MDrawer>

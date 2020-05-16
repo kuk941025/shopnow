@@ -8,8 +8,9 @@ import LangIcon from "@material-ui/icons/Language";
 import MenuIcon from '@material-ui/icons/Menu';
 import { DrawerWidth } from "../../libs/const";
 import Search from "../search/Search";
+import { MainClickType } from "../../pages/main/MainConst";
 
-const Toolbar = ({ onToggle, onLangDialog }) => {
+const Toolbar = ({ onClick }) => {
     const classes = useStyles();
     return (
         <AppBar position="fixed" className={classes.appBar} elevation={2}>
@@ -18,7 +19,7 @@ const Toolbar = ({ onToggle, onLangDialog }) => {
                     color="inherit"
                     edge="start"
                     className={classes.menuButton}
-                    onClick={onToggle}
+                    onClick={() => onClick({ type: MainClickType.Toggle })}
                 >
                     <MenuIcon />
                 </IconButton>
@@ -26,10 +27,10 @@ const Toolbar = ({ onToggle, onLangDialog }) => {
                 <div className={classes.toolRoot}>
                     <Search />
                     <div >
-                        <IconButton>
+                        <IconButton onClick={() => onClick({ type: MainClickType.noti })}>
                             <NotiIcon />
                         </IconButton>
-                        <IconButton onClick={onLangDialog}>
+                        <IconButton onClick={() => onClick({ type: MainClickType.lang })}>
                             <LangIcon />
                         </IconButton>
                     </div>
@@ -67,7 +68,7 @@ const useStyles = makeStyles(theme => ({
                 marginLeft: 'auto',
             },
             "&:first-child": {
-                marginRight: theme.spacing(1), 
+                marginRight: theme.spacing(1),
             }
         }
     },

@@ -10,12 +10,14 @@ import Search from "../search/Search";
 import NotFound from "../notfound/NotFound";
 import URLs from "../../libs/urls";
 import LangDialog from "../../layouts/langdialog/LangDialog";
+import { MainClickType } from "./MainConst";
 
 let productItems = [];
 const setProductItems = () => {
     for (let i = 0; i < 100; i++) productItems.push(i);
 }
 setProductItems();
+
 
 const Main = ({ location }) => {
     const classes = useStyles();
@@ -37,15 +39,29 @@ const Main = ({ location }) => {
         }
     }
 
+    const handleClick = action => {
+        switch (action.type) {
+            case MainClickType.Toggle:
+                setMobileOpen(!mobileOpen);
+                break;
+            case MainClickType.lang:
+                setLangDialog(!langDialog);
+                break;
+            case MainClickType.noti:
+                break;
+            default:
+        }
+    }
     return (
         <div className={classes.root}>
 
-            <Toolbar onToggle={() => setMobileOpen(!mobileOpen)} onLangDialog={() => setLangDialog(true)} />
-            <Drawer onToggle={() => setMobileOpen(!mobileOpen)} mobileOpen={mobileOpen} />
+            <Toolbar onClick={handleClick} />
+            <Drawer onClick={handleClick} mobileOpen={mobileOpen} />
             <main className={classes.content}>
                 <div className={classes.toolbar} />
                 {getContents()}
             </main>
+
 
             <LangDialog open={langDialog} onClose={() => setLangDialog(false)} />
         </div>
