@@ -21,147 +21,149 @@ const db = admin.firestore();
  * 
  * 
  */
-exports.getRecommends = functions.https.onRequest(async (req, res) => {
-
-    let { categories, gender, age, date } = req.query;
-    if (!categories || !gender || !age || !date) {
-        res.status(400).send({
-            success: false,
-            msg: "query missing"
-        });
-        return;
-    }
-
-    let category_ids = categories.split(",");
-
-    date = moment(date, "YYYY-MM-DD").tz("Asia/Seoul").subtract(1, "day").format("YYYY-MM-DD");
-    try {
-        let trends_promises = [];
-        category_ids.forEach(category_id => {
-            trends_promises.push(
-                db.doc(`categories/${category_id}/trends/${date}`).get()
-            )
-        });
-
-        let trends_snap = await Promise.all(trends_promises);
-        let top_trends = [];
-
-        trends_snap.forEach((snap, idx) => {
-            let trend_data = snap.data();
-            if (gender === "m") {
-                top_trends.push({
-                    ...trend_data.male.find(male_data => male_data.group === age),
-                    name: trend_data.name[1],
-                    cat_id: category_ids[idx]
-                })
-            }
-            else {
-                top_trends.push({
-                    ...trend_data.felmale.find(female_data => female_data.group === age),
-                    name: trend_data.name[1],
-                    cat_id: category_ids[idx]
-                })
-            }
-        })
-        top_trends.sort((a, b) => a.ratio < b.ratio);
-        top_trends = top_trends.slice(0, 5);
-
-        let top_promises = [];
-        top_trends.forEach(trend => {
-            top_promises.push(
-                axios.get(`${baseURL}/search/shop.json`, {
-                    "params": {
-                        "query": trend.name,
-                        "display": 20
-                    },
-                    "headers": {
-                        "Content-Type": "application/json",
-                        "X-Naver-Client-Id": Client_ID,
-                        "X-Naver-Client-Secret": Client_Secret
-                    }
-                })
-            )
-        })
-
-        let top_snaps = await Promise.all(top_promises);
-        let results = [];
-
-        top_snaps.forEach(top => {
-            top.data.items.forEach(item => results.push(item));
-        })
-
-        res.send({
-            success: true,
-            data: results
-        });
-
-    } catch (err) {
-        res.status(400).send({
-            success: false,
-            msg: err
-        })
-    }
-})
-
-
-//Daily update trends by calling Datalab API
-exports.updateTrends = functions.https.onRequest(async (req, res) => {
-
-    try {
-        let categories_resp = await db.collection('categories').get();
-        let categories_data = [];
-        let main_categories;
-        for (let doc of categories_resp.docs) {
-            if (doc.id === "root") {
-                main_categories = doc.data().main_categories;
-            }
-            else categories_data.push({ id: doc.id, ...doc.data() });
+exports.getRecommends = functions.https.onRequest((req, res) => {
+    cors(req, res, async () => {
+        let { categories, gender, age, date } = req.query;
+        if (!categories || !gender || !age || !date) {
+            res.status(400).send({
+                success: false,
+                msg: "query missing"
+            });
+            return;
         }
 
-        const date = moment().tz("Asia/Seoul").subtract("1", "day").format('YYYY-MM-DD');
-        let promises = [];
+        let category_ids = categories.split(",");
 
-        for (let category of categories_data) {
-            ["m", "f"].forEach(gender => {
-                promises.push(
-                    axios.post(`${baseURL}/datalab/shopping/category/age`, {
-                        "startDate": date,
-                        "endDate": date,
-                        "timeUnit": "date",
-                        "category": category.cat_id,
-                        "gender": gender,
-                        "ages": []
-                    }, {
+        date = moment(date, "YYYY-MM-DD").tz("Asia/Seoul").subtract(1, "day").format("YYYY-MM-DD");
+        try {
+            let trends_promises = [];
+            category_ids.forEach(category_id => {
+                trends_promises.push(
+                    db.doc(`categories/${category_id}/trends/${date}`).get()
+                )
+            });
+
+            let trends_snap = await Promise.all(trends_promises);
+            let top_trends = [];
+
+            trends_snap.forEach((snap, idx) => {
+                let trend_data = snap.data();
+                if (gender === "m") {
+                    top_trends.push({
+                        ...trend_data.male.find(male_data => male_data.group === age),
+                        name: trend_data.name[1],
+                        cat_id: category_ids[idx]
+                    })
+                }
+                else {
+                    top_trends.push({
+                        ...trend_data.felmale.find(female_data => female_data.group === age),
+                        name: trend_data.name[1],
+                        cat_id: category_ids[idx]
+                    })
+                }
+            })
+            top_trends.sort((a, b) => a.ratio < b.ratio);
+            top_trends = top_trends.slice(0, 5);
+
+            let top_promises = [];
+            top_trends.forEach(trend => {
+                top_promises.push(
+                    axios.get(`${baseURL}/search/shop.json`, {
+                        "params": {
+                            "query": trend.name,
+                            "display": 20
+                        },
                         "headers": {
                             "Content-Type": "application/json",
                             "X-Naver-Client-Id": Client_ID,
                             "X-Naver-Client-Secret": Client_Secret
                         }
                     })
-                );
+                )
+            })
+
+            let top_snaps = await Promise.all(top_promises);
+            let results = [];
+
+            top_snaps.forEach(top => {
+                top.data.items.forEach(item => results.push(item));
+            })
+
+            return res.send({
+                success: true,
+                data: results
             });
+
+        } catch (err) {
+            return res.status(400).send({
+                success: false,
+                msg: err
+            })
         }
-        let promises_snaps = await Promise.all(promises);
-        let batch = db.batch();
+    });
+})
 
-        let idx = 0;
-        for (let category of categories_data) {
 
-            batch.set(db.doc(`categories/${category.id}/trends/${date}`), {
-                male: promises_snaps[idx].data.results[0].data,
-                felmale: promises_snaps[idx + 1].data.results[0].data,
-                name: category.name
-            });
+//Daily update trends by calling Datalab API
+exports.updateTrends = functions.https.onRequest((req, res) => {
+    cors(req, res, async () => {
+        try {
+            let categories_resp = await db.collection('categories').get();
+            let categories_data = [];
+            let main_categories;
+            for (let doc of categories_resp.docs) {
+                if (doc.id === "root") {
+                    main_categories = doc.data().main_categories;
+                }
+                else categories_data.push({ id: doc.id, ...doc.data() });
+            }
 
-            idx += 2;
+            const date = moment().tz("Asia/Seoul").subtract("1", "day").format('YYYY-MM-DD');
+            let promises = [];
+
+            for (let category of categories_data) {
+                ["m", "f"].forEach(gender => {
+                    promises.push(
+                        axios.post(`${baseURL}/datalab/shopping/category/age`, {
+                            "startDate": date,
+                            "endDate": date,
+                            "timeUnit": "date",
+                            "category": category.cat_id,
+                            "gender": gender,
+                            "ages": []
+                        }, {
+                            "headers": {
+                                "Content-Type": "application/json",
+                                "X-Naver-Client-Id": Client_ID,
+                                "X-Naver-Client-Secret": Client_Secret
+                            }
+                        })
+                    );
+                });
+            }
+            let promises_snaps = await Promise.all(promises);
+            let batch = db.batch();
+
+            let idx = 0;
+            for (let category of categories_data) {
+
+                batch.set(db.doc(`categories/${category.id}/trends/${date}`), {
+                    male: promises_snaps[idx].data.results[0].data,
+                    felmale: promises_snaps[idx + 1].data.results[0].data,
+                    name: category.name
+                });
+
+                idx += 2;
+            }
+            await batch.commit();
+            res.send({ success: true });
+
+        } catch (err) {
+            console.log(err);
+            res.send({ success: false, err: err });
         }
-        await batch.commit();
-        res.send({ success: true });
-
-    } catch (err) {
-        console.log(err);
-        res.send({ success: false, err: err });
-    }
+    })
 
 })
 
@@ -191,40 +193,42 @@ exports.setCategories = functions.https.onRequest(async (req, res) => {
     res.send("success");
 })
 
-exports.getCategories = functions.https.onRequest(async (req, res) => {
-    try {
-        let category_snap = await db.collection('categories').get();
-        let categories = [];
-        let main_categories;
-        category_snap.forEach(category_doc => {
-            let data = category_doc.data()
-            if (category_doc.id === "root"){
-                main_categories = data.main_categories
-            }
-            else categories.push(data)
-        })
-
-        let results = []
-        main_categories.forEach(main => {
-            results.push({
-                title: main.title,
-                categories: []
+exports.getCategories = functions.https.onRequest((req, res) => {
+    cors(req, res, async () => {
+        try {
+            let category_snap = await db.collection('categories').get();
+            let categories = [];
+            let main_categories;
+            category_snap.forEach(category_doc => {
+                let data = category_doc.data()
+                if (category_doc.id === "root") {
+                    main_categories = data.main_categories
+                }
+                else categories.push(data)
             })
-        });
 
-        categories.forEach(category => {
-            let { idx, ...other } = category;
-            results[idx].categories.push(other);
-        });
+            let results = []
+            main_categories.forEach(main => {
+                results.push({
+                    title: main.title,
+                    categories: []
+                })
+            });
 
-        res.send({
-            success: true,
-            data: results, 
-        })
-    } catch (err) {
-        res.send({
-            success: false,
-            msg: err
-        })
-    }
+            categories.forEach(category => {
+                let { idx, ...other } = category;
+                results[idx].categories.push(other);
+            });
+
+            res.send({
+                success: true,
+                data: results,
+            })
+        } catch (err) {
+            res.send({
+                success: false,
+                msg: err
+            })
+        }
+    })
 })
