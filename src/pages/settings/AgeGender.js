@@ -6,10 +6,13 @@ import Typography from "@material-ui/core/Typography";
 import Slider from "./SliderCss";
 import Strings from "../../libs/strings";
 import { localString } from "../../libs/utils";
+import { SettingEvents } from "./SettingsConst";
 
-const AgeGender = () => {
+const AgeGender = ({ gender, onClick }) => {
     const classes = useStyles();
 
+    
+    
     return (
         <div className={classes.root}>
             <Typography variant="body1" className={classes.title} gutterBottom>
@@ -17,8 +20,9 @@ const AgeGender = () => {
             </Typography>
             <ToggleButtonGroup
                 exclusive
-                value=""
-            >
+                value={gender}
+                onChange={(e, value) => onClick({type: SettingEvents.onGender, data: value})}
+            >   
                 <ToggleButton value="male" className={classes.toggleButton}>
                     {localString(Strings.settings_male)}
                 </ToggleButton>
@@ -33,9 +37,12 @@ const AgeGender = () => {
                 </Typography>
 
                 <Slider
+                    onChange={(e, value) => onClick({type: SettingEvents.onAge, value: value})}
                     valueLabelDisplay="auto"
                     defaultValue={20}
-                    step={5}
+                    step={10}
+                    min={10}
+                    max={60}
                     className={classes.slider}
                 />
             </div>
@@ -61,7 +68,7 @@ const useStyles = makeStyles(theme => ({
     ageRoot: {
         marginTop: theme.spacing(5),
         width: '80%',
-        minWidth: 300, 
+        minWidth: 300,
     },
     title: {
         fontWeight: '600',

@@ -10,11 +10,27 @@ import AgeGender from "./AgeGender";
 import Category from "./Category";
 import Strings from "../../libs/strings";
 import { localString } from "../../libs/utils";
-
+import { SettingEvents } from "./SettingsConst";
 
 const Settings = ({ history }) => {
     const classes = useStyles();
     const [steps, setSteps] = useState(0);
+    const [gender, setGender] = useState('');
+    const [age, setAge] = useState(20);
+
+    const handleClick = action => {
+        switch (action.type) {
+            case SettingEvents.onGender:
+                setGender(action.data);
+                break;
+            case SettingEvents.onAge:
+                setAge(action.data);
+                break;
+            default:
+                break;
+        }
+    }
+
     return (
         <div className={classes.root}>
             <Container maxWidth="sm" className={classes.container}>
@@ -26,7 +42,7 @@ const Settings = ({ history }) => {
                     ))}
                 </Stepper>
                 <div className={classes.contents}>
-                    {steps === 0 && <AgeGender />}
+                    {steps === 0 && <AgeGender onClick={handleClick} gender={gender}/>}
                     {steps === 1 && <Category />}
                 </div>
                 <div className={classes.buttonRoot}>
@@ -36,6 +52,7 @@ const Settings = ({ history }) => {
                             fullWidth
                             color="primary"
                             variant="contained"
+                            disabled={gender === "" ? true : false}
                             className={classes.button}
                             disableElevation>
                             {localString(Strings.settings_next)}
@@ -93,7 +110,7 @@ const useStyles = makeStyles(theme => ({
     button: {
         flex: 1,
         borderRadius: 3,
-        height: 50, 
+        height: 50,
     }
 }))
 export default Settings
