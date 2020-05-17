@@ -26,7 +26,7 @@ exports.getRecommends = functions.https.onRequest(async (req, res) => {
     let { categories, gender, age, date } = req.query;
     if (!categories || !gender || !age || !date) {
         res.status(400).send({
-            result: false,
+            success: false,
             msg: "query missing"
         });
         return;
@@ -51,7 +51,7 @@ exports.getRecommends = functions.https.onRequest(async (req, res) => {
             if (gender === "m") {
                 top_trends.push({
                     ...trend_data.male.find(male_data => male_data.group === age),
-                    name: trend_data.name[1], 
+                    name: trend_data.name[1],
                     cat_id: category_ids[idx]
                 })
             }
@@ -91,13 +91,13 @@ exports.getRecommends = functions.https.onRequest(async (req, res) => {
         })
 
         res.send({
-            success: true, 
-            data: results 
+            success: true,
+            data: results
         });
 
     } catch (err) {
         res.status(400).send({
-            result: false,
+            success: false,
             msg: err
         })
     }
@@ -189,4 +189,42 @@ exports.setCategories = functions.https.onRequest(async (req, res) => {
 
     await batch.commit();
     res.send("success");
+})
+
+exports.getCategories = functions.https.onRequest(async (req, res) => {
+    try {
+        let category_snap = await db.collection('categories').get();
+        let categories = [];
+        let main_categories;
+        category_snap.forEach(category_doc => {
+            let data = category_doc.data()
+            if (category_doc.id === "root"){
+                main_categories = data.main_categories
+            }
+            else categories.push(data)
+        })
+
+        let results = []
+        main_categories.forEach(main => {
+            results.push({
+                title: main.title,
+                categories: []
+            })
+        });
+
+        categories.forEach(category => {
+            let { idx, ...other } = category;
+            results[idx].categories.push(other);
+        });
+
+        res.send({
+            success: true,
+            data: results, 
+        })
+    } catch (err) {
+        res.send({
+            success: false,
+            msg: err
+        })
+    }
 })
