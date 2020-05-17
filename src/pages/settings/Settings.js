@@ -28,7 +28,7 @@ const Settings = ({ history }) => {
 
     useEffect(() => {
         dispatch(getCategories());
-    }, []);
+    }, [dispatch]);
 
     //Init user data if exists
     useEffect(() => {
@@ -38,7 +38,7 @@ const Settings = ({ history }) => {
         setAge(user_data.age);
 
         let selected_categories = {};
-        user_data.selected_categories.map(category => {
+        user_data.selected_categories.forEach(category => {
             selected_categories[category.cat_id] = category;
         });
         setChecked(selected_categories);

@@ -8,9 +8,9 @@ let productItems = [];
 const setProductItems = () => {
     for (let i = 0; i < 20; i++) {
         productItems.push({
-            loading: i % 2 === 0 ? true : false,
-            name: 'Product Name ' + i,
-            price: '1500'
+            loading: false,
+            title: 'Product Name ' + i,
+            lprice: '1500'
         });
     }
 }

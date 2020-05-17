@@ -35,32 +35,31 @@ const ProductItem = ({ onClick, onFavClick, data }) => {
                         <CardActionArea onClick={onClick}>
                             <div variant="body1" className={classes.imgRoot}>
                                 <img alt="product_img" className={classes.img}
-                                    src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/169963/photo-1429043794791-eb8f26f44081.jpeg" />
-                                <Typography component="span" className={classes.titleRoot} >
-                                    {data.name}
+                                    src={data.image} />
+                                <Typography className={classes.titleRoot} >
+                                    {data.title}
                                 </Typography>
                             </div>
                         </CardActionArea>
                         <div className={classes.contentRoot}>
                             <div>
                                 <Typography variant="body1" className={classes.price}>
-                                    {`${data.price} ${localString(Strings.item_won)}`}
+                                    {`${Number(data.lprice).toLocaleString()}${localString(Strings.item_won)}`}
                                 </Typography>
                                 <IconButton>
                                     <FavoriteIcon className={classes.icon} />
                                 </IconButton>
                             </div>
                             <div >
-                                {tempCategory.map((category, idx) => (
-                                    <React.Fragment key={idx} >
-                                        <Typography variant="body1" noWrap className={classes.category}>
-                                            {category}
-                                        </Typography>
-                                        <Typography className={classes.category} variant="body1" style={{ padding: `0px 4px` }}>
-                                            /
-                                    </Typography>
-                                    </React.Fragment>
-                                ))}
+                                <Typography variant="body1" noWrap className={classes.category}>
+                                    {data.category1}
+                                </Typography>
+                                <Typography className={classes.category} variant="body1" style={{ padding: `0px 4px` }}>
+                                    /
+                                </Typography>
+                                <Typography variant="body1" noWrap className={classes.category}>
+                                    {data.category2}
+                                </Typography>
                             </div>
                         </div>
                     </>
@@ -92,7 +91,10 @@ const useStyles = makeStyles(theme => ({
         fontWeight: 600,
         backgroundColor: 'white',
         fontSize: '1.1rem',
-        borderRadius: `0px 7.5px 7.5px 0px`
+        borderRadius: `0px 7.5px 7.5px 0px`,
+        width: '80%',
+        height: 32,
+        overflow: 'hidden'
     },
     contentRoot: {
         padding: `${theme.spacing(2)}px ${theme.spacing(2)}px`,
