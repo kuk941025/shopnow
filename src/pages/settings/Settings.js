@@ -12,9 +12,10 @@ import Strings from "../../libs/strings";
 import { localString } from "../../libs/utils";
 import { SettingEvents } from "./SettingsConst";
 import { useSelector, useDispatch } from "react-redux";
-import { getCategories } from "./SettingsActions";
+import { getCategories, setUserData } from "./SettingsActions";
 import Loading from "../../layouts/loading/Loading";
 import update from "immutability-helper";
+import URLs from "../../libs/urls";
 
 const Settings = ({ history }) => {
     const classes = useStyles();
@@ -23,31 +24,66 @@ const Settings = ({ history }) => {
     const [gender, setGender] = useState('');
     const [age, setAge] = useState(20);
     const [checked, setChecked] = useState({});
-    const { loading, categories } = useSelector(state => state.settings);
+    const { loading, categories, user_data } = useSelector(state => state.settings);
 
     useEffect(() => {
         dispatch(getCategories());
     }, []);
 
+    //Init user data if exists
+    useEffect(() => {
+        if (!user_data) return;
+
+        setGender(user_data.gender);
+        setAge(user_data.age);
+
+        let selected_categories = {};
+        user_data.selected_categories.map(category => {
+            selected_categories[category.cat_id] = category;
+        });
+        setChecked(selected_categories);
+    }, [user_data])
+    
 
     const handleClick = action => {
         switch (action.type) {
             case SettingEvents.onGender:
-                setGender(action.data);
+                if (!action.data) setGender("")
+                else setGender(action.data);
                 break;
             case SettingEvents.onAge:
                 setAge(action.data);
                 break;
             case SettingEvents.onCheck:
                 setChecked(update(checked, {
-                    [action.cat_id]: {$set: !Boolean(checked[action.cat_id])}
+                    [action.cat_id]: { $set: Boolean(checked[action.cat_id]) ? null : { name: action.name, cat_id: action.cat_id } }
                 }))
-                console.log(action);
+                break;
+            case SettingEvents.complete:
+                let cnt = 0;
+                Object.keys(checked).forEach(key => {
+                    if (checked[key]) cnt++;
+                })
+
+                if (cnt < 5) {
+                    alert(localString(Strings.settings_category_error));
+                    return;
+                }
+
+                //if >= 5 categories are selected
+                let selected_categories = [];
+                Object.keys(checked).forEach(key => {
+                    if (checked[key]) selected_categories.push(checked[key]);
+                })
+                localStorage.setItem("userdata", JSON.stringify({ gender, age, selected_categories }));
+                dispatch(setUserData({ gender, age, selected_categories }))
+                history.push(URLs.Main);
                 break;
             default:
                 break;
         }
     }
+
 
     return (
         <div className={classes.root}>
@@ -60,8 +96,8 @@ const Settings = ({ history }) => {
                     ))}
                 </Stepper>
                 <div className={classes.contents}>
-                    {steps === 0 && <AgeGender onClick={handleClick} gender={gender} />}
-                    {steps === 1 && <Category  onClick={handleClick} main_categories={categories} checked={checked} />}
+                    {steps === 0 && <AgeGender onClick={handleClick} gender={gender} age={age}/>}
+                    {steps === 1 && <Category onClick={handleClick} main_categories={categories} checked={checked} />}
                 </div>
                 <div className={classes.buttonRoot}>
                     {steps === 0 &&
@@ -91,7 +127,7 @@ const Settings = ({ history }) => {
                                 variant="contained"
                                 disableElevation
                                 color="primary"
-                                onClick={() => history.push("/recommends")}
+                                onClick={() => handleClick({ type: SettingEvents.complete })}
                             >
                                 {localString(Strings.settings_complete)}
                             </Button>

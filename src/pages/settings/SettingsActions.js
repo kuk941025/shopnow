@@ -3,14 +3,14 @@ import { BaseURL } from "../../libs/const";
 
 export const SettingsActionType = {
     request: "requestCategory",
-    response: "responseCategory"
+    response: "responseCategory",
+    setUser: "setUserData"
 }
 
 
 export const getCategories = () => async dispatch => {
     try {
         dispatch({ type: SettingsActionType.request });
-        console.log(BaseURL);
         let resp = await axios.get(`${BaseURL}/getCategories`);
 
         let { data } = resp.data;
@@ -20,4 +20,8 @@ export const getCategories = () => async dispatch => {
         console.log(err);
         alert(err);
     }
+}
+
+export const setUserData = (data) => dispatch => {
+    dispatch({ type: SettingsActionType.setUser, data });
 }

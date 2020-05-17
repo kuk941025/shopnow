@@ -27,7 +27,7 @@ const Category = ({ main_categories, checked = [], onClick }) => {
                     </ListItem>
                     {main_category.categories.map(sub_category => (
                         <ListItem
-                            onClick={() => onClick({ type: SettingEvents.onCheck, cat_id: sub_category.cat_id })}
+                            onClick={() => onClick({ type: SettingEvents.onCheck, name: sub_category.name, cat_id: sub_category.cat_id })}
                             dense
                             button
                             key={sub_category.cat_id}>

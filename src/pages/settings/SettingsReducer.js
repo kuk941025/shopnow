@@ -3,6 +3,7 @@ import { SettingsActionType } from "./SettingsActions";
 const initState = {
     loading: true,
     categories: [],
+    user_data: null, 
 }
 
 const SettingsReducer = (state = initState, action) => {
@@ -17,7 +18,12 @@ const SettingsReducer = (state = initState, action) => {
                 ...state,
                 loading: false,
                 categories: action.data
-            }   
+            }
+        case SettingsActionType.setUser:
+            return {
+                ...state,
+                user_data: action.data
+            }
         default:
             return state;
     }

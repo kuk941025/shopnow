@@ -10,19 +10,25 @@ const Strings = {
         ["Info", "Category"],
         ["정보", "카테고리"]
     ],
+    settings_category_error: [
+        "Please choose more than 5 categories",
+        "5개 이상의 카테고리를 선택해주세요."],
 
     search_placeholder: ["Search", "검색"],
-    
+
     drawer_items: [
         ["Recommends", "Favorites", "Settings"],
         ["추천", "즐겨찾기", "설정"]
     ],
-    
+    drawer_age: ["'S", "대"],
+    drawer_male: ["Male", "남자"],
+    drawer_female: ["Female", "여자"],
+
     error_wrong_url: ["Wrong URL", "잘못된 URL입니다."],
-    
+
     detail_favorite: ["Favorite", "즐겨찾기"],
     detail_next_items: ["Next Items", "다음 아이템"],
-    
+
     item_won: ["Won", "원"],
 
     lang_title: ["Set default language", "언어를 선택해주세요."],

@@ -8,7 +8,7 @@ import Strings from "../../libs/strings";
 import { localString } from "../../libs/utils";
 import { SettingEvents } from "./SettingsConst";
 
-const AgeGender = ({ gender, onClick }) => {
+const AgeGender = ({ gender, onClick, age }) => {
     const classes = useStyles();
 
     
@@ -37,9 +37,9 @@ const AgeGender = ({ gender, onClick }) => {
                 </Typography>
 
                 <Slider
-                    onChange={(e, value) => onClick({type: SettingEvents.onAge, value: value})}
+                    onChange={(e, value) => onClick({type: SettingEvents.onAge, data: value})}
                     valueLabelDisplay="auto"
-                    defaultValue={20}
+                    value={age}
                     step={10}
                     min={10}
                     max={60}

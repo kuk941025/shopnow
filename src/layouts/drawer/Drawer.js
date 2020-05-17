@@ -19,7 +19,8 @@ import { withRouter } from "react-router-dom";
 import URLs from "../../libs/urls";
 import { MainClickType } from "../../pages/main/MainConst";
 import Chip from "@material-ui/core/Chip";
-
+import { useSelector } from "react-redux";
+import Tooltip from "@material-ui/core/Tooltip";
 const getIcon = (idx) => {
     if (idx === 0) return <ThumbUpIcon />
     else if (idx === 1) return <FavoriteIcon />
@@ -28,33 +29,31 @@ const getIcon = (idx) => {
 
 const Drawer = ({ mobileOpen, history, onClick }) => {
     const classes = useStyles();
-
+    const { user_data } = useSelector(state => state.settings);
     const onListItemClicked = (idx) => {
         if (idx === 0) history.push(URLs.Main);
         else if (idx === 1) history.push(URLs.Favorites);
         else history.push(URLs.Settings);
     }
 
+
     const getDrawer = () => {
         return (
             <div className={classes.drawerContents}>
                 <div className={classes.toolbar}>
                     <Typography variant="h5" className={classes.title}>
-                        Age
+                        {`${user_data.age}${localString(Strings.drawer_age)}`}
                     </Typography>
                     <Typography variant="body1" gutterBottom>
-                        Gender
+                        {localString(user_data.gender === "male" ? Strings.drawer_male : Strings.drawer_female)}
                     </Typography>
                     <div className={classes.categoryRoot}>
-                        <Chip label="category 1" variant="outlined" />
-                        <Chip label="category 1" variant="outlined" />
-                        <Chip label="category 1" variant="outlined" />
-                        <Chip label="category 1" variant="outlined" />
-                        <Chip label="category 1" variant="outlined" />
-                        <Chip label="category 1" variant="outlined" />
-                        <Chip label="category 1" variant="outlined" />
-                        <Chip label="category 1" variant="outlined" />
-                        <Chip label="category 1" variant="outlined" />
+                        {user_data.selected_categories.map(category => (
+                            <Tooltip key={category.cat_id} title={localString(category.name)} >
+                                <Chip className={classes.chip} label={localString(category.name)} variant="outlined" />
+                            </Tooltip>
+                        ))}
+
                     </div>
                     <Divider variant="middle" className={classes.divider} />
                     <List>
@@ -140,15 +139,18 @@ const useStyles = makeStyles(theme => ({
         border: `.5px solid ${Grey['200']}`,
         marginTop: theme.spacing(2),
         alignItems: 'center',
-        justifyContent: 'space-evenly',
+        justifyContent: 'space-around',
         flexWrap: 'wrap',
-        display: 'flex',  
+        display: 'flex',
         '& > *': {
             margin: `${theme.spacing(0.5)}px 0px`,
         },
     },
     divider: {
         margin: `${theme.spacing(3)}px 0px`
+    },
+    chip: {
+        width: (DrawerWidth - theme.spacing(7)) / 2,
     }
 }))
 export default withRouter(Drawer);

@@ -12,7 +12,8 @@ import URLs from "../../libs/urls";
 import LangDialog from "../../layouts/langdialog/LangDialog";
 import HistoryPopper from "../../layouts/history_popper/HistoryPopper";
 import { MainClickType } from "./MainConst";
-
+import { Redirect } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 let productItems = [];
 const setProductItems = () => {
@@ -23,9 +24,13 @@ setProductItems();
 
 const Main = ({ location }) => {
     const classes = useStyles();
+    const { user_data } = useSelector(state => state.settings);
     const [mobileOpen, setMobileOpen] = useState(false);
     const [langDialog, setLangDialog] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
+
+    //if user data is not set, redirect to settings
+    if (!user_data) return <Redirect to={URLs.Settings} />
 
     const getContents = () => {
         switch (true) {
@@ -57,8 +62,11 @@ const Main = ({ location }) => {
                 setAnchorEl(null);
                 break;
             default:
+                break;
         }
     }
+
+
     return (
         <div className={classes.root}>
 
@@ -72,7 +80,7 @@ const Main = ({ location }) => {
 
             <HistoryPopper onClick={handleClick} anchorEl={anchorEl} />
             <LangDialog open={langDialog} onClose={() => setLangDialog(false)} />
-        </div >
+        </div>
     )
 }
 
