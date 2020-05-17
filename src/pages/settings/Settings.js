@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import Container from "@material-ui/core/Container";
 import Grey from "@material-ui/core/colors/grey";
@@ -11,15 +11,25 @@ import Category from "./Category";
 import Strings from "../../libs/strings";
 import { localString } from "../../libs/utils";
 import { SettingEvents } from "./SettingsConst";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { getCategories } from "./SettingsActions";
+import Loading from "../../layouts/loading/Loading";
+import update from "immutability-helper";
 
 const Settings = ({ history }) => {
     const classes = useStyles();
+    const dispatch = useDispatch();
     const [steps, setSteps] = useState(0);
     const [gender, setGender] = useState('');
     const [age, setAge] = useState(20);
-    const { loaded } = useSelector(state => state.settings);
-    console.log(loaded);
+    const [checked, setChecked] = useState({});
+    const { loading, categories } = useSelector(state => state.settings);
+
+    useEffect(() => {
+        dispatch(getCategories());
+    }, []);
+
+
     const handleClick = action => {
         switch (action.type) {
             case SettingEvents.onGender:
@@ -27,6 +37,12 @@ const Settings = ({ history }) => {
                 break;
             case SettingEvents.onAge:
                 setAge(action.data);
+                break;
+            case SettingEvents.onCheck:
+                setChecked(update(checked, {
+                    [action.cat_id]: {$set: !Boolean(checked[action.cat_id])}
+                }))
+                console.log(action);
                 break;
             default:
                 break;
@@ -44,8 +60,8 @@ const Settings = ({ history }) => {
                     ))}
                 </Stepper>
                 <div className={classes.contents}>
-                    {steps === 0 && <AgeGender onClick={handleClick} gender={gender}/>}
-                    {steps === 1 && <Category />}
+                    {steps === 0 && <AgeGender onClick={handleClick} gender={gender} />}
+                    {steps === 1 && <Category  onClick={handleClick} main_categories={categories} checked={checked} />}
                 </div>
                 <div className={classes.buttonRoot}>
                     {steps === 0 &&
@@ -83,6 +99,8 @@ const Settings = ({ history }) => {
                     }
                 </div>
             </Container>
+
+            <Loading loading={loading} />
         </div>
     )
 }

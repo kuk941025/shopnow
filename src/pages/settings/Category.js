@@ -1,43 +1,53 @@
 import React from 'react'
 import makeStyles from '@material-ui/core/styles/makeStyles';
-import FormLabel from '@material-ui/core/FormLabel';
-import FormControl from '@material-ui/core/FormControl';
-import FormGroup from '@material-ui/core/FormGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
+import { localString } from "../../libs/utils";
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import { SettingEvents } from "./SettingsConst";
 
-const tempData = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
-const getFormControl = (classes) => {
-    return (
-        <>
-            <FormControl>
-                <FormLabel className={classes.formLabel}>Category 1</FormLabel>
-                <FormGroup row className={classes.formGroup}>
-                    {tempData.map((data, idx) => (
-                        <FormControlLabel
-                            key={data}
-                            control={<Checkbox checked={false} name={String(data)} />}
-                            label={<Typography className={classes.checkbox} noWrap>{"subasdasdasdqw"}</Typography>}
-                            color="primary"
-                        />
-                    ))}
-                </FormGroup>
-            </FormControl>
-            <Divider variant="middle" />
-        </>
-    )
-}
-const Category = () => {
+const Category = ({ main_categories, checked = [], onClick }) => {
     const classes = useStyles();
     return (
-        <div className={classes.root}>
-            {getFormControl(classes)}
-            {getFormControl(classes)}
-            {getFormControl(classes)}
-            {getFormControl(classes)}
-        </div>
+        <List className={classes.root}>
+
+            {main_categories && main_categories.map(main_category => (
+                <React.Fragment key={localString(main_category.title)}>
+                    <ListItem>
+                        <ListItemText
+                            style={{ fontWeight: 600 }}
+                            primary={
+                                <Typography className={classes.title} variant="body1">
+                                    {localString(main_category.title)}
+                                </Typography>} />
+                    </ListItem>
+                    {main_category.categories.map(sub_category => (
+                        <ListItem
+                            onClick={() => onClick({ type: SettingEvents.onCheck, cat_id: sub_category.cat_id })}
+                            dense
+                            button
+                            key={sub_category.cat_id}>
+                            <ListItemIcon>
+                                <Checkbox
+                                    edge="start"
+                                    checked={Boolean(checked[sub_category.cat_id])}
+                                    tabIndex={-1}
+                                    disableRipple
+                                    color="secondary"
+                                />
+                            </ListItemIcon>
+                            <ListItemText primary={localString(sub_category.name)} />
+                        </ListItem>
+                    ))}
+                    <Divider variant="middle" />
+                </React.Fragment>
+            ))
+            }
+        </List >
     )
 }
 
@@ -56,7 +66,10 @@ const useStyles = makeStyles(theme => ({
         justifyContent: 'space-around'
     },
     checkbox: {
-        width: 50,
+        color: theme.palette.secondary.light
+    },
+    title: {
+        fontWeight: 600,
     }
 }))
 export default Category
