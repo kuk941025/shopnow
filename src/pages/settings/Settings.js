@@ -11,13 +11,15 @@ import Category from "./Category";
 import Strings from "../../libs/strings";
 import { localString } from "../../libs/utils";
 import { SettingEvents } from "./SettingsConst";
+import { useSelector } from "react-redux";
 
 const Settings = ({ history }) => {
     const classes = useStyles();
     const [steps, setSteps] = useState(0);
     const [gender, setGender] = useState('');
     const [age, setAge] = useState(20);
-
+    const { loaded } = useSelector(state => state.settings);
+    console.log(loaded);
     const handleClick = action => {
         switch (action.type) {
             case SettingEvents.onGender:
