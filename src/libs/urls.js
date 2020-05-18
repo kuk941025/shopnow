@@ -1,6 +1,6 @@
 const URLs = {
-    Settings: "/", 
-    Main: "/recommends",
+    Settings: "/Settings", 
+    Main: "/",
     Favorites: "/favorites", 
     ProductDetail: "/products",
     Search: "/search",

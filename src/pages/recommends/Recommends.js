@@ -6,17 +6,6 @@ import URLs from "../../libs/urls";
 import { useDispatch, useSelector } from "react-redux";
 import { getRecommends } from "./RecommendsActions";
 
-let productItems = [];
-const setProductItems = () => {
-    for (let i = 0; i < 20; i++) {
-        productItems.push({
-            loading: false,
-            name: 'Product Name ' + i,
-            price: '1500'
-        });
-    }
-}
-setProductItems();
 
 const Recommends = ({ history }) => {
     const dispatch = useDispatch();
@@ -25,11 +14,20 @@ const Recommends = ({ history }) => {
         dispatch(getRecommends());
     }, [dispatch]);
 
+    useEffect(() => {
+        let temp = {};
+        recommendsData.forEach(item => {
+            temp[item.productId] = item
+        });
 
+    }, [recommendsData])
     return (
         <Grid container spacing={3}>
-            {recommendsData.map((product, idx) => (
-                <ProductItem data={product} onClick={() => history.push(`${URLs.ProductDetail}?product_id=${idx}`)} key={idx} />
+            {recommendsData.map((product) => (
+                <ProductItem
+                    data={product}
+                    onClick={() => history.push(`${URLs.ProductDetail}?product_id=${product.productId}`)}
+                    key={product.productId} />
             ))}
         </Grid>
     )

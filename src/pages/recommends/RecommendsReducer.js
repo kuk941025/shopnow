@@ -1,4 +1,6 @@
 import { RecommendActionTypes } from "./RecommendsActions";
+import { v4 as uuidv4 } from 'uuid';
+
 const initState = {
     data: [],
 }
@@ -11,6 +13,7 @@ const recommendsReducer = (state = initState, action) => {
             for (let i = 0; i < 20; i++){
                 loading_data.push({
                     loading: true, 
+                    productId: uuidv4() 
                 })
             } 
                 

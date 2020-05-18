@@ -28,7 +28,12 @@ const Strings = {
 
     detail_favorite: ["Favorite", "즐겨찾기"],
     detail_next_items: ["Next Items", "다음 아이템"],
-
+    detail_general_product: ["General Product", "일반상품"],
+    detail_used_product: ["Used Product", "중고상품"],
+    detail_discontinued_product: ["Discontinued Product", "단종상품"],
+    detail_coming_soon_product: ["Coming Soon", "판매예정상품"],
+    detail_NA: ["NA", "없음"],
+    
     item_won: ["Won", "원"],
 
     lang_title: ["Set default language", "언어를 선택해주세요."],

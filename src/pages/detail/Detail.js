@@ -10,15 +10,17 @@ import Button from "@material-ui/core/Button";
 import { DrawerWidth } from "../../libs/const";
 import Strings from "../../libs/strings";
 import { localString } from "../../libs/utils";
-
+import { useSelector } from "react-redux";
 const tempCategory = ["Category1", "Category2", "Category3"];
 
 
 const Detail = ({ location }) => {
-    const [productID, setProductId] = useState('');
-    const [drawerVisible, setDrawerVisible] = useState(false);
     const classes = useStyles();
     const theme = useTheme();
+    const recommendData = useSelector(state => state.recommends.data);
+    const [productID, setProductId] = useState('');
+    const [drawerVisible, setDrawerVisible] = useState(false);
+    const [product, setProduct] = useState(null);
 
     //listen whether drawer is visible or not.
     useLayoutEffect(() => {
@@ -37,9 +39,29 @@ const Detail = ({ location }) => {
 
     useEffect(() => {
         const { product_id } = qs.parse(location.search);
-        setProductId(product_id);
+        let selected = recommendData.find(item => item.productId === product_id);
+        let productTypeString = "";
+        try {
+            let productType = Number(selected.productType);
+            if (productType >= 10)
+                productTypeString = localString(Strings.detail_coming_soon_product);
+            else if (productType >= 7)
+                productTypeString = localString(Strings.detail_discontinued_product);
+            else if (productType >= 4)
+                productTypeString = localString(Strings.detail_used_product);
+            else
+                productTypeString = localString(Strings.detail_general_product);
+
+            setProduct({
+                ...selected,
+                productType: productTypeString
+            });
+        } catch (err) {
+            setProduct(null);
+        }
     }, [location])
 
+    if (!product) return null;
     return (
         <Grid container spacing={2} className={classes.root}>
             <Grid
@@ -50,35 +72,42 @@ const Detail = ({ location }) => {
                 <img
                     alt="product_detail"
                     className={classes.img}
-                    src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/169963/photo-1429043794791-eb8f26f44081.jpeg"
+                    src={product.image}
                 />
             </Grid>
             <Grid item className={classNames(classes.item, classes.itemDescrp)} xs={12} md={6}>
                 <Typography varaint="body1" className={classes.title}>
-                    Title
+                    {product.title}
                 </Typography>
                 <div className={classes.flexRoot}>
                     <Typography className={classes.price} variant="body1">
-                        Price
+                        {`${Number(product.lprice).toLocaleString()}~${Number(product.hprice).toLocaleString()}`}
+                        {` ${localString(Strings.item_won)}`}
                     </Typography>
                     <Typography style={{ marginLeft: 'auto' }} variant="body1">
-                        Marker/Brand
+                        {`${product.maker}/${product.brand === '' ? localString(Strings.detail_NA) : product.brand}`}
                     </Typography>
                 </div>
                 <Typography variant="body1">
-                    Product Type
+                    {product.productType}
                 </Typography>
                 <div className={classNames(classes.flexRoot)}>
-                    {tempCategory.map(category => (
-                        <React.Fragment key={category}>
-                            <Typography className={classes.category} varaint="body1">
-                                {category}
-                            </Typography>
-                            <Typography className={classes.category} style={{ margin: `0px 4px` }}>
-                                /
-                            </Typography>
-                        </React.Fragment>
-                    ))}
+                    <Typography className={classes.category} varaint="body1">
+                        {product.category1}
+                    </Typography>
+                    <Typography className={classNames(classes.category, classes.categoryDash)} style={{ margin: `0px 4px` }}>
+                        /
+                    </Typography>
+                    <Typography className={classes.category} varaint="body1">
+                        {product.category2}
+                    </Typography>
+                    <Typography className={classNames(classes.category, classes.categoryDash)} style={{ margin: `0px 4px` }}>
+                        /
+                    </Typography>
+                    <Typography className={classes.category} varaint="body1">
+                        {product.category3}
+                    </Typography>
+
                 </div>
                 <Typography varaint="body1" className={classes.nextItems}>
                     {localString(Strings.detail_next_items)}
@@ -162,7 +191,9 @@ const useStyles = makeStyles(theme => ({
     category: {
         fontSize: '0.9rem'
     },
-
+    categoryDash: {
+        color: theme.palette.secondary.main
+    },
     price: {
         color: theme.palette.primary.main,
         fontWeight: 'bold'

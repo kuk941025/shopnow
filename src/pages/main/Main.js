@@ -34,7 +34,7 @@ const Main = ({ location }) => {
 
     const getContents = () => {
         switch (true) {
-            case location.pathname.includes(URLs.Main):
+            case location.pathname === URLs.Main:
                 return <Recommends />
             case location.pathname.includes(URLs.Favorites):
                 return <Favorites />
