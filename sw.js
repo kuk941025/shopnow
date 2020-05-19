@@ -1,8 +1,8 @@
 module.exports = {
-    "globDirectory": "public/",
+    "globDirectory": "build/",
     "globPatterns": [
-        "**/*.{ico,html,png,json,txt}"
+        "**/*.{ico,html,png,json,txt,js,svg}"
     ],
-    "swDest": "public/service-worker.js",
+    "swDest": "build/service-worker.js",
     "swSrc": "workbox-config.js"
 };

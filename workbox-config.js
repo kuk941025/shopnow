@@ -9,7 +9,9 @@ workbox.core.clientsClaim();
 
 workbox.precaching.precacheAndRoute(self.__WB_MANIFEST);
 
-
+workbox.routing.registerRoute(
+    new workbox.routing.NavigationRoute(workbox.precaching.createHandlerBoundToURL("/index.html"))
+);
 
 workbox.routing.registerRoute(
     new RegExp(/\.(png|jpg|svg)/),
