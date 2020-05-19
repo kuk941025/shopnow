@@ -4,6 +4,10 @@ const initState = {
     loading: true,
     categories: [],
     user_data: null, 
+    err: {
+        value: false,
+        msg: ''
+    }
 }
 
 const SettingsReducer = (state = initState, action) => {
@@ -17,12 +21,24 @@ const SettingsReducer = (state = initState, action) => {
             return {
                 ...state,
                 loading: false,
-                categories: action.data
+                categories: action.data,
+                err: {
+                    value: false,
+                    msg: '', 
+                }
             }
         case SettingsActionType.setUser:
             return {
                 ...state,
                 user_data: action.data
+            }
+        case SettingsActionType.errNetwork:
+            return {
+                ...state,
+                err: {
+                    value: true, 
+                    msg: "Network Error"
+                }
             }
         default:
             return state;

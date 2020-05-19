@@ -16,6 +16,7 @@ import { getCategories, setUserData } from "./SettingsActions";
 import Loading from "../../layouts/loading/Loading";
 import update from "immutability-helper";
 import URLs from "../../libs/urls";
+import ErrorPage from "../error_page/ErrorPage";
 
 const Settings = ({ history }) => {
     const classes = useStyles();
@@ -24,7 +25,7 @@ const Settings = ({ history }) => {
     const [gender, setGender] = useState('');
     const [age, setAge] = useState(20);
     const [checked, setChecked] = useState({});
-    const { loading, categories, user_data } = useSelector(state => state.settings);
+    const { loading, categories, user_data, err } = useSelector(state => state.settings);
 
     useEffect(() => {
         dispatch(getCategories());
@@ -43,7 +44,7 @@ const Settings = ({ history }) => {
         });
         setChecked(selected_categories);
     }, [user_data])
-    
+
 
     const handleClick = action => {
         switch (action.type) {
@@ -84,7 +85,15 @@ const Settings = ({ history }) => {
         }
     }
 
-
+    if (err.value) {
+        return (
+            <ErrorPage
+                msg={localString(Strings.err_msg_offline)}
+                btn={{ msg: localString(Strings.err_retry), onClick: () => dispatch(getCategories()) }}
+            />
+        )
+    }
+    
     return (
         <div className={classes.root}>
             <Container maxWidth="sm" className={classes.container}>
@@ -96,7 +105,7 @@ const Settings = ({ history }) => {
                     ))}
                 </Stepper>
                 <div className={classes.contents}>
-                    {steps === 0 && <AgeGender onClick={handleClick} gender={gender} age={age}/>}
+                    {steps === 0 && <AgeGender onClick={handleClick} gender={gender} age={age} />}
                     {steps === 1 && <Category onClick={handleClick} main_categories={categories} checked={checked} />}
                 </div>
                 <div className={classes.buttonRoot}>

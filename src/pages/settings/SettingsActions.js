@@ -4,7 +4,8 @@ import { BaseURL } from "../../libs/const";
 export const SettingsActionType = {
     request: "requestCategory",
     response: "responseCategory",
-    setUser: "setUserData"
+    setUser: "setUserData",
+    errNetwork: "errNetworkCategory"
 }
 
 
@@ -17,8 +18,8 @@ export const getCategories = () => async dispatch => {
         dispatch({ type: SettingsActionType.response, data });
 
     } catch (err) {
-        console.log(err);
-        alert(err);
+        dispatch({type: SettingsActionType.errNetwork});
+
     }
 }
 
