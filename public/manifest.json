@@ -36,6 +36,10 @@
       "src": "/icons/icon-16x16.png",
       "type": "image/png",
       "sizes": "16x16"
+    },
+    {
+      "src": "/icons/icon.svg",
+      "szies": "any"
     }
   ],
   "start_url": ".",
