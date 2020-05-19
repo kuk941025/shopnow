@@ -2,28 +2,25 @@ import React from 'react'
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import ErrorIcon from "@material-ui/icons/ErrorOutlineOutlined";
 import Typography from "@material-ui/core/Typography";
-import { localString } from "../../libs/utils";
-import Strings from "../../libs/strings";
 import Button from "@material-ui/core/Button";
-import { withRouter } from "react-router-dom";
 
-const NotFound = ({ history }) => {
+const ErrorPage = ({ msg, btn }) => {
     const classes = useStyles();
-    console.log(history);
+    
     return (
         <div className={classes.root}>
             <ErrorIcon className={classes.icon} />
             <Typography className={classes.error} variant="body1">
-                {localString(Strings.error_wrong_url)}
+                {msg}
             </Typography>
             <Button
                 size="large"
                 color="primary"
                 variant="contained"
                 disableElevation
-                onClick={() => history.goBack()}
+                onClick={btn.onClick}
                 className={classes.button}>
-                Go Back
+                {btn.msg}
             </Button>
         </div>
     )
@@ -51,4 +48,4 @@ const useStyles = makeStyles(theme => ({
 
     }
 }))
-export default withRouter(NotFound);
+export default ErrorPage;

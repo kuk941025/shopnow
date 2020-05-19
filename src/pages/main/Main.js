@@ -7,13 +7,15 @@ import Recommends from "../recommends/Recommends";
 import Favorites from "../favorites/Favorites";
 import Detail from "../detail/Detail";
 import Search from "../search/Search";
-import NotFound from "../notfound/NotFound";
+import ErrorPage from "../error_page/ErrorPage";
 import URLs from "../../libs/urls";
 import LangDialog from "../../layouts/langdialog/LangDialog";
 import HistoryPopper from "../../layouts/history_popper/HistoryPopper";
 import { MainClickType } from "./MainConst";
 import { Redirect } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { localString } from "../../libs/utils";
+import Strings from "../../libs/strings";
 
 let productItems = [];
 const setProductItems = () => {
@@ -22,7 +24,7 @@ const setProductItems = () => {
 setProductItems();
 
 
-const Main = ({ location }) => {
+const Main = ({ location, history }) => {
     const classes = useStyles();
     const { user_data } = useSelector(state => state.settings);
     const [mobileOpen, setMobileOpen] = useState(false);
@@ -43,7 +45,9 @@ const Main = ({ location }) => {
             case location.pathname.includes(URLs.Search):
                 return <Search />
             default:
-                return <NotFound />
+                return <ErrorPage
+                    msg={localString(Strings.err_msg_not_found)}
+                    btn={{ msg: localString(Strings.err_go_back), onClick: history.goBack }} />
         }
     }
 

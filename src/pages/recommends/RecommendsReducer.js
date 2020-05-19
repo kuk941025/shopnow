@@ -1,9 +1,13 @@
-import { RecommendActionTypes } from "./RecommendsActions";
+import { RecommendActionTypes, RecommendErrorType } from "./RecommendsActions";
 import { v4 as uuidv4 } from 'uuid';
 
 const initState = {
     data: [],
-    params: {}
+    params: {},
+    err: {
+        value: false,
+        msg: ''
+    }, 
 }
 
 
@@ -19,19 +23,40 @@ const recommendsReducer = (state = initState, action) => {
             } 
                 
             return {
-                ...state,
+                ...state, 
                 data: loading_data
             };
 
         case RecommendActionTypes.response:
             return {
                 ...state,
-                params: action.params, 
+                params: action.params,
+                err: {
+                    value: false,
+                    msg: ''
+                },
                 data: action.data.map(item => ({
                     ...item,
                     loading: false, 
                 }))
             };
+            
+        case RecommendActionTypes.errNetwork:
+            return {
+                ...state,
+                err: {
+                    value: true, 
+                    msg: RecommendErrorType.network
+                }
+            }
+        case RecommendActionTypes.errUnknown:
+            return {
+                ...state,
+                err: {
+                    value: true,
+                    msg: RecommendErrorType.unknown
+                }
+            }
         default:
             return state;
     }

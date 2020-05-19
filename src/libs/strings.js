@@ -44,7 +44,14 @@ const Strings = {
         ["영어", "한국어"]
     ],
     lang_language: ["Language", "언어"],
-    lang_available: ["Available Languages", "사용가능한 언어"]
+    lang_available: ["Available Languages", "사용가능한 언어"],
+
+    err_msg_not_found: ["Wrong URL", "잘못된 주소입니다."],
+    err_go_back: ["Go Back", "돌아가기"],
+    err_msg_offline: ["Network is not available", "인터넷 연결 없음"],
+    err_retry: ["Retry", "다시시도"],
+    err_msg_unknown: ["Unknown error", "알수없는 오류"],
+    err_msg_not_available: ["Contents is not available. Please retry in few minutes", "컨텐츠가 없습니다. 잠시후 다시 시도해주세요."]
 }
 
 export default Strings;

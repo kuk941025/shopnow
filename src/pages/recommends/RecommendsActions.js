@@ -5,7 +5,13 @@ import moment from "moment";
 export const RecommendActionTypes = {
     request: 'reqeustRecommends',
     response: 'respRecommends',
-    err: 'errRecommends'
+    errNetwork: 'errNetworkRecommends',
+    errUnknown: 'errUnknownRecommends'
+}
+
+export const RecommendErrorType = {
+    network: 'Network Error',
+    unknown: 'Unknown Error'
 }
 export const getRecommends = () => async (dispatch, getState) => {
     const state = getState();
@@ -21,7 +27,7 @@ export const getRecommends = () => async (dispatch, getState) => {
 
 
     //check if user has already requested getRecommends API with the same parameter
-    
+
     if (params && Object.keys(params).length > 0) {
         //deep comparison beetwen params and req_params
         let is_equal = true
@@ -32,8 +38,6 @@ export const getRecommends = () => async (dispatch, getState) => {
         if (is_equal) return;
     }
 
-
-
     dispatch({ type: RecommendActionTypes.request });
     try {
         let resp = await axios.get(`${BaseURL}/getRecommends`, {
@@ -43,7 +47,14 @@ export const getRecommends = () => async (dispatch, getState) => {
         dispatch({ type: RecommendActionTypes.response, data: resp.data.data, params: req_params });
 
     } catch (err) {
+        //if network error is occured
         console.log(err);
+        console.log(err.message);
+        if (err.message === "Network Error")
+            dispatch({ type: RecommendActionTypes.errNetwork });
+        else
+            dispatch({ type: RecommendActionTypes.errUnknown });
+
     }
 
 }

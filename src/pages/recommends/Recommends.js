@@ -4,26 +4,39 @@ import ProductItem from "../../layouts/productitem/ProductItem";
 import { withRouter } from "react-router-dom";
 import URLs from "../../libs/urls";
 import { useDispatch, useSelector } from "react-redux";
-import { getRecommends } from "./RecommendsActions";
-
+import { getRecommends, RecommendErrorType } from "./RecommendsActions";
+import ErrorPage from "../error_page/ErrorPage";
+import { localString } from "../../libs/utils";
+import Strings from "../../libs/strings";
 
 const Recommends = ({ history }) => {
     const dispatch = useDispatch();
-    const recommendsData = useSelector(state => state.recommends.data);
+    const recommendState = useSelector(state => state.recommends);
+
     useEffect(() => {
         dispatch(getRecommends());
     }, [dispatch]);
 
-    useEffect(() => {
-        let temp = {};
-        recommendsData.forEach(item => {
-            temp[item.productId] = item
-        });
+    if (recommendState.err.value) {
+        switch (recommendState.err.msg) {
+            case RecommendErrorType.network:
+                return <ErrorPage
+                    msg={localString(Strings.err_msg_offline)}
+                    btn={{ msg: localString(Strings.err_retry), onClick: () => dispatch(getRecommends()) }}
+                />
 
-    }, [recommendsData])
+            default:
+                return <ErrorPage
+                    msg={localString(Strings.err_msg_unknown)}
+                    btn={{ msg: localString(Strings.err_retry), onClick: () => dispatch(getRecommends()) }}
+                />
+        }
+
+
+    }
     return (
         <Grid container spacing={3}>
-            {recommendsData.map((product) => (
+            {recommendState.data.map((product) => (
                 <ProductItem
                     data={product}
                     onClick={() => history.push(`${URLs.ProductDetail}?product_id=${product.productId}`)}
