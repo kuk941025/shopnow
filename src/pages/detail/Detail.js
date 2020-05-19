@@ -11,14 +11,13 @@ import { DrawerWidth } from "../../libs/const";
 import Strings from "../../libs/strings";
 import { localString } from "../../libs/utils";
 import { useSelector } from "react-redux";
-const tempCategory = ["Category1", "Category2", "Category3"];
+import URLs from "../../libs/urls";
 
 
-const Detail = ({ location }) => {
+const Detail = ({ location, history }) => {
     const classes = useStyles();
     const theme = useTheme();
     const recommendData = useSelector(state => state.recommends.data);
-    const [productID, setProductId] = useState('');
     const [drawerVisible, setDrawerVisible] = useState(false);
     const [product, setProduct] = useState(null);
 
@@ -39,7 +38,8 @@ const Detail = ({ location }) => {
 
     useEffect(() => {
         const { product_id } = qs.parse(location.search);
-        let selected = recommendData.find(item => item.productId === product_id);
+        const selectedIdx = recommendData.findIndex(item => item.productId === product_id);
+        let selected = recommendData[selectedIdx]
         let productTypeString = "";
         try {
             let productType = Number(selected.productType);
@@ -54,14 +54,17 @@ const Detail = ({ location }) => {
 
             setProduct({
                 ...selected,
-                productType: productTypeString
+                productType: productTypeString,
+                selectedIdx: selectedIdx,
             });
+
         } catch (err) {
             setProduct(null);
         }
     }, [location])
 
     if (!product) return null;
+
     return (
         <Grid container spacing={2} className={classes.root}>
             <Grid
@@ -112,17 +115,22 @@ const Detail = ({ location }) => {
                 <Typography varaint="body1" className={classes.nextItems}>
                     {localString(Strings.detail_next_items)}
                 </Typography>
-                <SwipeableViews enableMouseEvents>
-                    {tempCategory.map(category => (
-                        <img
-                            key={category}
-                            alt="next_items"
-                            className={classes.nextImg}
-                            src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/169963/photo-1429043794791-eb8f26f44081.jpeg"
-
-                        />
+                <SwipeableViews
+                    enableMouseEvents
+                    index={product.selectedIdx > 0 ? product.selectedIdx - 1 : product.selectedIdx}>
+                    {recommendData.filter((next, idx) => idx !== product.selectedIdx).map(next_item => (
+                        <div className={classes.nextItemRoot} >
+                            <img
+                                key={next_item.productId}
+                                alt="next_items"
+                                src={next_item.image}
+                                onClick={() => history.push(`${URLs.ProductDetail}?product_id=${next_item.productId}`)}
+                            />
+                        </div>
                     ))}
+
                 </SwipeableViews>
+
                 {drawerVisible ?
                     <Button color="primary" fullWidth className={classes.btnNoDrawer} variant="contained" >
                         {localString(Strings.detail_favorite)}
@@ -179,10 +187,18 @@ const useStyles = makeStyles(theme => ({
         fontWeight: 600,
         fontSize: '1.2rem',
     },
-    nextImg: {
-        width: '100%',
-        height: 250,
-        objectFit: 'contain'
+    nextItemRoot: {
+        display: 'flex',
+        marginTop: theme.spacing(1), 
+        "& img": {
+            width: '60%',
+            height: 250,
+            objectFit: 'contain',
+            margin: 'auto',
+            "&:hover":{
+                cursor: "pointer"
+            }
+        }
     },
     flexRoot: {
         display: 'flex',
