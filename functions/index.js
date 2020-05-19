@@ -23,7 +23,7 @@ const db = admin.firestore();
  */
 exports.getRecommends = functions.https.onRequest((req, res) => {
     cors(req, res, async () => {
-        let { categories, gender, age, date } = req.query;
+        const { categories, gender, age, date } = req.query;
         if (!categories || !gender || !age || !date) {
             res.status(400).send({
                 success: false,
@@ -34,12 +34,12 @@ exports.getRecommends = functions.https.onRequest((req, res) => {
 
         let category_ids = categories.split(",");
 
-        date = moment(date, "YYYY-MM-DD").tz("Asia/Seoul").subtract(1, "day").format("YYYY-MM-DD");
+        let query_date = moment(date, "YYYY-MM-DD").tz("Asia/Seoul").subtract(1, "day").format("YYYY-MM-DD");
         try {
             let trends_promises = [];
             category_ids.forEach(category_id => {
                 trends_promises.push(
-                    db.doc(`categories/${category_id}/trends/${date}`).get()
+                    db.doc(`categories/${category_id}/trends/${query_date}`).get()
                 )
             });
 
