@@ -3,13 +3,14 @@ import { v4 as uuidv4 } from 'uuid';
 
 const initState = {
     data: [],
+    params: {}
 }
 
 
 const recommendsReducer = (state = initState, action) => {
     switch (action.type) {
         case RecommendActionTypes.request:
-            let loading_data = [];
+            const loading_data = [];
             for (let i = 0; i < 20; i++){
                 loading_data.push({
                     loading: true, 
@@ -25,6 +26,7 @@ const recommendsReducer = (state = initState, action) => {
         case RecommendActionTypes.response:
             return {
                 ...state,
+                params: action.params, 
                 data: action.data.map(item => ({
                     ...item,
                     loading: false, 
