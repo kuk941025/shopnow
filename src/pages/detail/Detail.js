@@ -7,12 +7,13 @@ import Typography from "@material-ui/core/Typography";
 import classNames from 'classnames';
 import SwipeableViews from "react-swipeable-views";
 import Button from "@material-ui/core/Button";
-import { DrawerWidth } from "../../libs/const";
 import Strings from "../../libs/strings";
 import { localString } from "../../libs/utils";
 import { useSelector } from "react-redux";
 import URLs from "../../libs/urls";
-
+import Skeleton from "@material-ui/lab/Skeleton";
+import DetailCss from "./DetailCss";
+import DetailSkeleton from "./DetailSkeleton";
 
 const Detail = ({ location, history }) => {
     const classes = useStyles();
@@ -26,9 +27,9 @@ const Detail = ({ location, history }) => {
         const updateLayout = () => {
             const width = window.innerWidth;
             if (width > theme.breakpoints.values['sm']) {
-                setDrawerVisible(false);
+                setDrawerVisible(true);
             }
-            else setDrawerVisible(true);
+            else setDrawerVisible(false);
         }
         window.addEventListener('resize', updateLayout);
         updateLayout();
@@ -63,8 +64,9 @@ const Detail = ({ location, history }) => {
         }
     }, [location])
 
-    if (!product) return null;
 
+    // return <DetailSkeleton drawerVisible={drawerVisible} />
+    if (!product) return null;
     return (
         <Grid container spacing={2} className={classes.root}>
             <Grid
@@ -132,11 +134,11 @@ const Detail = ({ location, history }) => {
                 </SwipeableViews>
 
                 {drawerVisible ?
-                    <Button color="primary" fullWidth className={classes.btnNoDrawer} variant="contained" >
+                    <Button color="primary" className={classes.btnDrawer} variant="contained" disableElevation>
                         {localString(Strings.detail_favorite)}
                     </Button>
                     :
-                    <Button color="primary" className={classes.btnDrawer} variant="contained" disableElevation>
+                    <Button color="primary" fullWidth className={classes.btnNoDrawer} variant="contained" >
                         {localString(Strings.detail_favorite)}
                     </Button>
                 }
@@ -147,92 +149,5 @@ const Detail = ({ location, history }) => {
     )
 }
 
-const useStyles = makeStyles(theme => ({
-    item: {
-        [theme.breakpoints.up('md')]: {
-            height: `calc(100vh - 100px)`,
-        },
-    },
-    itemImg: {
-        [theme.breakpoints.up('md')]: {
-            display: 'flex',
-            alignItems: 'center',
-        },
-    },
-    itemDescrp: {
-        [theme.breakpoints.up('md')]: {
-            display: 'flex',
-            flexDirection: 'column',
-        },
-    },
-    img: {
-        width: '100%',
-
-        [theme.breakpoints.down('md')]: {
-            paddingTop: `${theme.spacing(2)}px`,
-        },
-    },
-    root: {
-        backgroundColor: 'white',
-        [theme.breakpoints.down('md')]: {
-            paddingBottom: 50,
-        }
-    },
-    title: {
-        fontWeight: 600,
-        fontSize: '1.5rem'
-    },
-    nextItems: {
-        marginTop: theme.spacing(3),
-        fontWeight: 600,
-        fontSize: '1.2rem',
-    },
-    nextItemRoot: {
-        display: 'flex',
-        marginTop: theme.spacing(1), 
-        "& img": {
-            width: '60%',
-            height: 250,
-            objectFit: 'contain',
-            margin: 'auto',
-            "&:hover":{
-                cursor: "pointer"
-            }
-        }
-    },
-    flexRoot: {
-        display: 'flex',
-        width: '100%',
-    },
-    category: {
-        fontSize: '0.9rem'
-    },
-    categoryDash: {
-        color: theme.palette.secondary.main
-    },
-    price: {
-        color: theme.palette.primary.main,
-        fontWeight: 'bold'
-    },
-    btnNoDrawer: {
-        position: 'fixed',
-        left: 0,
-        bottom: 0,
-        borderRadius: 3,
-    },
-    btnDrawer: {
-        [theme.breakpoints.down('md')]: {
-            position: 'fixed',
-            left: DrawerWidth,
-            bottom: 0,
-            width: `calc(100% - ${DrawerWidth}px)`
-        },
-        [theme.breakpoints.up('md')]: {
-            marginTop: 'auto',
-            position: 'inherit',
-            width: '100%'
-        },
-        borderRadius: 3,
-    }
-}))
+const useStyles = makeStyles(DetailCss);
 export default withRouter(Detail);
