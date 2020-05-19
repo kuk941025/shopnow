@@ -11,17 +11,31 @@ import Strings from "../../libs/strings";
 import { localString } from "../../libs/utils";
 import { useSelector } from "react-redux";
 import URLs from "../../libs/urls";
-import Skeleton from "@material-ui/lab/Skeleton";
 import DetailCss from "./DetailCss";
+import { useDispatch } from "react-redux";
+import { getRecommends, RecommendErrorType } from "../recommends/RecommendsActions";
 import DetailSkeleton from "./DetailSkeleton";
+import ErrorPage from "../error_page/ErrorPage";
 
+const DetailErrorType = {
+    invalidId: "DetailInvalidProducTID",
+    network: "DetailNetworkError"
+}
 const Detail = ({ location, history }) => {
     const classes = useStyles();
     const theme = useTheme();
-    const recommendData = useSelector(state => state.recommends.data);
+    const dispatch = useDispatch();
+    const recommendState = useSelector(state => state.recommends);
     const [drawerVisible, setDrawerVisible] = useState(false);
-    const [product, setProduct] = useState(null);
-
+    const [detailData, setDetailData] = useState({
+        product: null,
+        productType: '',
+        selectedIdx: -1,
+        err: {
+            value: false,
+            msg: '',
+        }
+    })
     //listen whether drawer is visible or not.
     useLayoutEffect(() => {
         const updateLayout = () => {
@@ -36,37 +50,113 @@ const Detail = ({ location, history }) => {
         return () => window.removeEventListener('resize', updateLayout);
     }, [theme])
 
-
     useEffect(() => {
-        const { product_id } = qs.parse(location.search);
-        const selectedIdx = recommendData.findIndex(item => item.productId === product_id);
-        let selected = recommendData[selectedIdx]
-        let productTypeString = "";
-        try {
-            let productType = Number(selected.productType);
-            if (productType >= 10)
-                productTypeString = localString(Strings.detail_coming_soon_product);
-            else if (productType >= 7)
-                productTypeString = localString(Strings.detail_discontinued_product);
-            else if (productType >= 4)
-                productTypeString = localString(Strings.detail_used_product);
-            else
-                productTypeString = localString(Strings.detail_general_product);
+        let { data, err, completed } = recommendState;
 
-            setProduct({
-                ...selected,
-                productType: productTypeString,
-                selectedIdx: selectedIdx,
+        //if no recommended data, and not requested getRecommends to the server
+        if (!completed && data.length === 0) {
+            dispatch(getRecommends());
+            setDetailData({
+                ...detailData,
+                err: {
+                    value: false,
+                    msg: ''
+                },
+                loaded: false,
             });
-
-        } catch (err) {
-            setProduct(null);
+            return;
         }
-    }, [location])
+        if (completed) {
+            //if error has occured from retrieving recommenddata from server
+            if (err.value) {
+                setDetailData({
+                    ...detailData,
+                    err: {
+                        value: true,
+                        msg: err.msg,
+                    },
+                    loaded: true
+                })
+            }
+            //if no error, find selected product from given product id
+            else {
+                const { product_id } = qs.parse(location.search);
+                const recommendData = recommendState.data;
+                try {
+                    const selectedIdx = recommendData.findIndex(item => item.productId === product_id);
+                    const selected = recommendData[selectedIdx];
+                    let productTypeString = "";
+
+                    const productType = Number(selected.productType);
+                    if (productType >= 10)
+                        productTypeString = localString(Strings.detail_coming_soon_product);
+                    else if (productType >= 7)
+                        productTypeString = localString(Strings.detail_discontinued_product);
+                    else if (productType >= 4)
+                        productTypeString = localString(Strings.detail_used_product);
+                    else
+                        productTypeString = localString(Strings.detail_general_product);
+
+                    setDetailData({
+                        product: selected,
+                        productType: productTypeString,
+                        selectedIdx,
+                        err: {
+                            value: false,
+                            msg: '',
+                        },
+                        loaded: true
+                    });
+                } catch (err) {
+                    //if no product id is found from recommended data
+                    setDetailData({
+                        ...detailData,
+                        err: {
+                            value: true,
+                            msg: DetailErrorType.invalidId
+                        },
+                        loaded: true
+                    });
+                    return;
+                }
+            }
+        }
+
+    }, [recommendState, location])
 
 
-    // return <DetailSkeleton drawerVisible={drawerVisible} />
-    if (!product) return null;
+
+    if (!detailData.loaded)
+        return <DetailSkeleton drawerVisible={drawerVisible} />
+    if (detailData.err.value) {
+        switch (detailData.err.msg) {
+            case DetailErrorType.invalidId:
+                return (
+                    <ErrorPage
+                        msg={localString(Strings.err_msg_invalid_product)}
+                        btn={{ msg: localString(Strings.err_go_back), onClick: () => history.push(URLs.Main) }}
+                    />
+                )
+            case DetailErrorType.network:
+            case RecommendErrorType.network:
+                return (
+                    <ErrorPage
+                        msg={localString(Strings.err_msg_offline)}
+                        btn={{ msg: localString(Strings.err_retry), onClick: () => dispatch(getRecommends()) }}
+                    />
+                )
+            case RecommendErrorType.unknown:
+            default:
+                return (
+                    <ErrorPage
+                        msg={localString(Strings.err_msg_unknown)}
+                        btn={{ msg: localString(Strings.err_retry), onClick: () => dispatch(getRecommends()) }}
+                    />
+                )
+        }
+    }
+
+    const { product } = detailData;
     return (
         <Grid container spacing={2} className={classes.root}>
             <Grid
@@ -94,7 +184,7 @@ const Detail = ({ location, history }) => {
                     </Typography>
                 </div>
                 <Typography variant="body1">
-                    {product.productType}
+                    {detailData.productType}
                 </Typography>
                 <div className={classNames(classes.flexRoot)}>
                     <Typography className={classes.category} varaint="body1">
@@ -119,11 +209,10 @@ const Detail = ({ location, history }) => {
                 </Typography>
                 <SwipeableViews
                     enableMouseEvents
-                    index={product.selectedIdx > 0 ? product.selectedIdx - 1 : product.selectedIdx}>
-                    {recommendData.filter((next, idx) => idx !== product.selectedIdx).map(next_item => (
-                        <div className={classes.nextItemRoot} >
+                    index={detailData.selectedIdx > 0 ? detailData.selectedIdx - 1 : detailData.selectedIdx}>
+                    {recommendState.data.filter((next, idx) => idx !== detailData.selectedIdx).map(next_item => (
+                        <div key={next_item.productId} className={classes.nextItemRoot} >
                             <img
-                                key={next_item.productId}
                                 alt="next_items"
                                 src={next_item.image}
                                 onClick={() => history.push(`${URLs.ProductDetail}?product_id=${next_item.productId}`)}

@@ -8,6 +8,7 @@ const initState = {
         value: false,
         msg: ''
     }, 
+    completed: false, 
 }
 
 
@@ -24,7 +25,8 @@ const recommendsReducer = (state = initState, action) => {
                 
             return {
                 ...state, 
-                data: loading_data
+                data: loading_data,
+                completed: false, 
             };
 
         case RecommendActionTypes.response:
@@ -38,7 +40,8 @@ const recommendsReducer = (state = initState, action) => {
                 data: action.data.map(item => ({
                     ...item,
                     loading: false, 
-                }))
+                })),
+                completed: true
             };
             
         case RecommendActionTypes.errNetwork:
@@ -47,7 +50,8 @@ const recommendsReducer = (state = initState, action) => {
                 err: {
                     value: true, 
                     msg: RecommendErrorType.network
-                }
+                },
+                completed: true,
             }
         case RecommendActionTypes.errUnknown:
             return {
@@ -55,7 +59,8 @@ const recommendsReducer = (state = initState, action) => {
                 err: {
                     value: true,
                     msg: RecommendErrorType.unknown
-                }
+                },
+                completed: true
             }
         default:
             return state;

@@ -51,7 +51,9 @@ const Strings = {
     err_msg_offline: ["Network is not available", "인터넷 연결 없음"],
     err_retry: ["Retry", "다시시도"],
     err_msg_unknown: ["Unknown error", "알수없는 오류"],
-    err_msg_not_available: ["Contents is not available. Please retry in few minutes", "컨텐츠가 없습니다. 잠시후 다시 시도해주세요."]
+    err_msg_not_available: ["Contents is not available. Please retry in few minutes", "컨텐츠가 없습니다. 잠시후 다시 시도해주세요."],
+    err_msg_invalid_product: ["Invalid Product ID", "잘못된 아이템 정보입니다."],
+    
 }
 
 export default Strings;
