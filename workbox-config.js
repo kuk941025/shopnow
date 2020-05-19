@@ -1,13 +1,10 @@
 importScripts('https://storage.googleapis.com/workbox-cdn/releases/5.1.2/workbox-sw.js');
 
 
-workbox.setConfig({ debug: true });
+workbox.setConfig({ debug: false });
 
 workbox.core.skipWaiting();
 workbox.core.clientsClaim();
-
-
-self.skipWaiting();
 
 
 workbox.precaching.precacheAndRoute(self.__WB_MANIFEST);
@@ -32,13 +29,6 @@ workbox.routing.registerRoute(
     })
 );
 
-
-workbox.routing.registerRoute(
-    new RegExp(/\.(png|jpg)/),
-    new workbox.strategies.StaleWhileRevalidate({
-        cacheName: 'images',
-    }),
-);
 
 
 //Add google font to workbox
