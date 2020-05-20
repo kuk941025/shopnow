@@ -17,11 +17,7 @@ import { useSelector } from "react-redux";
 import { localString } from "../../libs/utils";
 import Strings from "../../libs/strings";
 
-let productItems = [];
-const setProductItems = () => {
-    for (let i = 0; i < 100; i++) productItems.push(i);
-}
-setProductItems();
+
 
 
 const Main = ({ location, history }) => {
