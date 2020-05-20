@@ -15,6 +15,7 @@ admin.initializeApp({
 const db = admin.firestore();
 
 
+
 /**
  * top 5 items => 20 each search result
  * A total of 100 items is returned to client
@@ -34,12 +35,12 @@ exports.getRecommends = functions.https.onRequest((req, res) => {
 
         let category_ids = categories.split(",");
 
-        let query_date = moment(date, "YYYY-MM-DD").tz("Asia/Seoul").subtract(1, "day").format("YYYY-MM-DD");
+        //let query_date = moment(date, "YYYY-MM-DD").tz("Asia/Seoul").subtract(1, "day").format("YYYY-MM-DD");
         try {
             let trends_promises = [];
             category_ids.forEach(category_id => {
                 trends_promises.push(
-                    db.doc(`categories/${category_id}/trends/${query_date}`).get()
+                    db.collection(`categories/${category_id}/trends/`).orderBy("created_at", "desc").limit(1).get()
                 )
             });
 
@@ -47,7 +48,8 @@ exports.getRecommends = functions.https.onRequest((req, res) => {
             let top_trends = [];
 
             trends_snap.forEach((snap, idx) => {
-                let trend_data = snap.data();
+                let trend_data = snap.docs[0].data();
+                
                 if (gender === "m") {
                     top_trends.push({
                         ...trend_data.male.find(male_data => male_data.group === age),
@@ -63,6 +65,7 @@ exports.getRecommends = functions.https.onRequest((req, res) => {
                     })
                 }
             })
+
             top_trends.sort((a, b) => a.ratio < b.ratio);
             top_trends = top_trends.slice(0, 5);
 
@@ -96,6 +99,7 @@ exports.getRecommends = functions.https.onRequest((req, res) => {
             });
 
         } catch (err) {
+            console.log(err);
             return res.status(400).send({
                 success: false,
                 msg: err
@@ -109,9 +113,10 @@ exports.getRecommends = functions.https.onRequest((req, res) => {
 exports.updateTrends = functions.https.onRequest((req, res) => {
     cors(req, res, async () => {
         try {
+            const cur_date = new Date();
             let categories_resp = await db.collection('categories').get();
             let categories_data = [];
-            let main_categories;
+            
             for (let doc of categories_resp.docs) {
                 if (doc.id === "root") {
                     main_categories = doc.data().main_categories;
@@ -143,15 +148,21 @@ exports.updateTrends = functions.https.onRequest((req, res) => {
                 });
             }
             let promises_snaps = await Promise.all(promises);
+
+
             let batch = db.batch();
 
             let idx = 0;
             for (let category of categories_data) {
+                let male_data = promises_snaps[idx].data.results[0].data;
+                let female_data = promises_snaps[idx + 1].data.results[0].data;
 
+                if (male_data.length === 0 || female_data.length === 0) continue;
                 batch.set(db.doc(`categories/${category.id}/trends/${date}`), {
-                    male: promises_snaps[idx].data.results[0].data,
-                    felmale: promises_snaps[idx + 1].data.results[0].data,
-                    name: category.name
+                    male: male_data,
+                    felmale: female_data,
+                    name: category.name,
+                    created_at: cur_date 
                 });
 
                 idx += 2;
