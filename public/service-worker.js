@@ -62,8 +62,8 @@ workbox.routing.registerRoute(
 
 //Cache shopping image
 workbox.routing.registerRoute(
-    ({ url }) => {
-        return url.origin === "https://shopping-phinf.pstatic.net"
+    ({ url, request }) => {;
+        return url.origin === "https://shopping-phinf.pstatic.net" && request.destination === "image"
     },
     new workbox.strategies.CacheFirst({
         cacheName: 'shopping-images',
