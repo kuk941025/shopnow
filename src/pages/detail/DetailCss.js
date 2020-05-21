@@ -26,7 +26,7 @@ const DetailCss = (theme) => ({
     },
     root: {
         backgroundColor: 'white',
-        [theme.breakpoints.down('md')]: {
+        [theme.breakpoints.down('sm')]: {
             paddingBottom: 50,
         }
     },
@@ -72,19 +72,18 @@ const DetailCss = (theme) => ({
         bottom: 0,
         borderRadius: 3,
     },
-    btnDrawer: {
-        [theme.breakpoints.down('md')]: {
-            position: 'fixed',
-            left: DrawerWidth,
-            bottom: 0,
-            width: `calc(100% - ${DrawerWidth}px)`
-        },
-        [theme.breakpoints.up('md')]: {
-            marginTop: 'auto',
-            position: 'inherit',
-            width: '100%'
-        },
-        borderRadius: 3,
+    btnFav: {
+        borderRadius: 3
+    },
+    btnDrawerFixed: {
+        position: 'fixed',
+        left: DrawerWidth,
+        bottom: 0,
+        width: `calc(100% - ${DrawerWidth}px)`,
+    },
+    btnDrawerNotFixed: {
+        marginTop: 'auto',
+        width: '100%'
     },
     skelVMargins: {
         margin: `${theme.spacing(0.5)}px 0px`

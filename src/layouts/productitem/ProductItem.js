@@ -10,7 +10,6 @@ import Skeleton from "@material-ui/lab/Skeleton";
 import Strings from "../../libs/strings";
 import { localString } from "../../libs/utils";
 
-const tempCategory = ["Category1", "Category2", "Category3"];
 const ProductItem = ({ onClick, onFavClick, data }) => {
     const classes = useStyles();
     const ShowSkeleton = () => {

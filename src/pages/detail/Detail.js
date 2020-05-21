@@ -16,6 +16,7 @@ import { useDispatch } from "react-redux";
 import { getRecommends, RecommendErrorType } from "../recommends/RecommendsActions";
 import DetailSkeleton from "./DetailSkeleton";
 import ErrorPage from "../error_page/ErrorPage";
+import Hidden from "@material-ui/core/Hidden";
 
 const DetailErrorType = {
     invalidId: "DetailInvalidProducTID",
@@ -223,11 +224,32 @@ const Detail = ({ location, history }) => {
                 </SwipeableViews>
 
                 {drawerVisible ?
-                    <Button color="primary" className={classes.btnDrawer} variant="contained" disableElevation>
-                        {localString(Strings.detail_favorite)}
-                    </Button>
+                    <div style={{marginTop: 'auto'}}>
+                        <Hidden implementation="css" mdUp>
+                            <Button
+                                color="primary"
+                                className={classNames(classes.btnDrawerFixed, classes.btnFav)}
+                                variant="contained"
+                                disableElevation>
+                                {localString(Strings.detail_favorite)}
+                            </Button>
+                        </Hidden>
+                        <Hidden implementation="css" smDown> 
+                            <Button
+                                color="primary"
+                                className={classNames(classes.btnDrawerNotFixed, classes.btnFav)}
+                                variant="contained"
+                                disableElevation>
+                                {localString(Strings.detail_favorite)}
+                            </Button>
+                        </Hidden>
+                    </div>
                     :
-                    <Button color="primary" fullWidth className={classes.btnNoDrawer} variant="contained" >
+                    <Button
+                        color="primary"
+                        fullWidth
+                        className={classNames(classes.btnNoDrawer, classes.btnFav)}
+                        variant="contained" >
                         {localString(Strings.detail_favorite)}
                     </Button>
                 }
