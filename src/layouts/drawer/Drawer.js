@@ -20,7 +20,6 @@ import URLs from "../../libs/urls";
 import { MainClickType } from "../../pages/main/MainConst";
 import Chip from "@material-ui/core/Chip";
 import { useSelector } from "react-redux";
-import Tooltip from "@material-ui/core/Tooltip";
 import classNames from "classnames";
 
 
@@ -52,12 +51,10 @@ const Drawer = ({ mobileOpen, history, onClick }) => {
                     </Typography>
                     <div className={classes.categoryRoot}>
                         {user_data.selected_categories.sort((a, b) => localString(a.name).length > localString(b.name).length ? -1 : 1).map(category => (
-                            <Tooltip key={category.cat_id} title={localString(category.name)} >
-                                <Chip
-                                    className={localString(category.name).length > 7 ? classes.longChip : classes.chip}
-                                    label={localString(category.name)}
-                                    variant="outlined" />
-                            </Tooltip>
+                            <Chip
+                                className={localString(category.name).length > 7 ? classes.longChip : classes.chip}
+                                label={localString(category.name)}
+                                variant="outlined" />
                         ))}
 
                     </div>
