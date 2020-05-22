@@ -21,6 +21,9 @@ import { MainClickType } from "../../pages/main/MainConst";
 import Chip from "@material-ui/core/Chip";
 import { useSelector } from "react-redux";
 import Tooltip from "@material-ui/core/Tooltip";
+import classNames from "classnames";
+
+
 const getIcon = (idx) => {
     if (idx === 0) return <ThumbUpIcon />
     else if (idx === 1) return <FavoriteIcon />
@@ -48,9 +51,12 @@ const Drawer = ({ mobileOpen, history, onClick }) => {
                         {localString(user_data.gender === "male" ? Strings.drawer_male : Strings.drawer_female)}
                     </Typography>
                     <div className={classes.categoryRoot}>
-                        {user_data.selected_categories.map(category => (
+                        {user_data.selected_categories.sort((a, b) => localString(a.name).length > localString(b.name).length ? -1 : 1).map(category => (
                             <Tooltip key={category.cat_id} title={localString(category.name)} >
-                                <Chip className={classes.chip} label={localString(category.name)} variant="outlined" />
+                                <Chip
+                                    className={localString(category.name).length > 7 ? classes.longChip : classes.chip}
+                                    label={localString(category.name)}
+                                    variant="outlined" />
                             </Tooltip>
                         ))}
 
@@ -151,6 +157,9 @@ const useStyles = makeStyles(theme => ({
     },
     chip: {
         width: (DrawerWidth - theme.spacing(7)) / 2,
+    },
+    longChip: {
+        width: (DrawerWidth - theme.spacing(7))
     }
 }))
 export default withRouter(Drawer);
