@@ -7,16 +7,16 @@ workbox.core.skipWaiting();
 workbox.core.clientsClaim();
 
 
-workbox.precaching.precacheAndRoute([{"revision":"3ec6e0f19d26ab9f2a224ecb3928d669","url":"icons/icon-128x128.png"},{"revision":"79a782b4adffafbe68589f8297e933dc","url":"icons/icon-16x16.png"},{"revision":"da1e5f909bcc07602b5897d79a468463","url":"icons/icon-24x24.png"},{"revision":"d1694d680a1151525b0f2baca377d4db","url":"icons/icon-256x256.png"},{"revision":"ad6c82c195b3e99ee9932a2f9ddda192","url":"icons/icon-32x32.png"},{"revision":"40f08f1450ce4f7a77224f1763dc54f2","url":"icons/icon-512x512.png"},{"revision":"04530015428ca219fc497a9df9553db6","url":"icons/icon-64x64.png"},{"revision":"d1a4955ab7b67db793b3eff4fbaf983f","url":"icons/icon.svg"},{"revision":"a1aa1ea042f6cdfb15e1c48469da62d2","url":"index.html"},{"revision":"02463b1e881cb56920d4b3bcd022db0d","url":"manifest.json"},{"revision":"fa1ded1ed7c11438a9b0385b1e112850","url":"robots.txt"}]);
+workbox.precaching.precacheAndRoute([{"revision":"3ec6e0f19d26ab9f2a224ecb3928d669","url":"icons/icon-128x128.png"},{"revision":"79a782b4adffafbe68589f8297e933dc","url":"icons/icon-16x16.png"},{"revision":"da1e5f909bcc07602b5897d79a468463","url":"icons/icon-24x24.png"},{"revision":"d1694d680a1151525b0f2baca377d4db","url":"icons/icon-256x256.png"},{"revision":"ad6c82c195b3e99ee9932a2f9ddda192","url":"icons/icon-32x32.png"},{"revision":"40f08f1450ce4f7a77224f1763dc54f2","url":"icons/icon-512x512.png"},{"revision":"04530015428ca219fc497a9df9553db6","url":"icons/icon-64x64.png"},{"revision":"d1a4955ab7b67db793b3eff4fbaf983f","url":"icons/icon.svg"},{"revision":"a1aa1ea042f6cdfb15e1c48469da62d2","url":"index.html"},{"revision":"8d7690a3a42d4b4c6017b2e0128a91fa","url":"manifest.json"},{"revision":"fa1ded1ed7c11438a9b0385b1e112850","url":"robots.txt"}]);
 
 workbox.routing.registerRoute(
     new workbox.routing.NavigationRoute(workbox.precaching.createHandlerBoundToURL("/index.html"))
 );
 
 workbox.routing.registerRoute(
-    new RegExp(/\.(png|jpg|svg)/),
+    new RegExp(/\.(png|jpg|svg|js)/),
     new workbox.strategies.StaleWhileRevalidate({
-        cacheName: 'images',
+        cacheName: 'shopnow-local',
     }),
 );
 
@@ -62,7 +62,7 @@ workbox.routing.registerRoute(
 
 //Cache shopping image
 workbox.routing.registerRoute(
-    ({ url, request }) => {;
+    ({ url, request }) => {
         return url.origin === "https://shopping-phinf.pstatic.net" && request.destination === "image"
     },
     new workbox.strategies.CacheFirst({
