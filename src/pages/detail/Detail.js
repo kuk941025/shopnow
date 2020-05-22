@@ -17,6 +17,8 @@ import { getRecommends, RecommendErrorType } from "../recommends/RecommendsActio
 import DetailSkeleton from "./DetailSkeleton";
 import ErrorPage from "../error_page/ErrorPage";
 import Hidden from "@material-ui/core/Hidden";
+import NavigateBeforeIcon from "@material-ui/icons/NavigateBefore";
+import NavigateNextIcon from "@material-ui/icons/NavigateNext";
 
 const DetailErrorType = {
     invalidId: "DetailInvalidProducTID",
@@ -126,7 +128,6 @@ const Detail = ({ location, history }) => {
     }, [recommendState, location])
 
 
-
     if (!detailData.loaded)
         return <DetailSkeleton drawerVisible={drawerVisible} />
     if (detailData.err.value) {
@@ -158,6 +159,7 @@ const Detail = ({ location, history }) => {
     }
 
     const { product } = detailData;
+
     return (
         <Grid container spacing={2} className={classes.root}>
             <Grid
@@ -208,23 +210,35 @@ const Detail = ({ location, history }) => {
                 <Typography varaint="body1" className={classes.nextItems}>
                     {localString(Strings.detail_next_items)}
                 </Typography>
-                <SwipeableViews
-                    enableMouseEvents
-                    index={detailData.selectedIdx > 0 ? detailData.selectedIdx - 1 : detailData.selectedIdx}>
-                    {recommendState.data.filter((next, idx) => idx !== detailData.selectedIdx).map(next_item => (
-                        <div key={next_item.productId} className={classes.nextItemRoot} >
-                            <img
-                                alt="next_items"
-                                src={next_item.image}
-                                onClick={() => history.push(`${URLs.ProductDetail}?product_id=${next_item.productId}`)}
-                            />
-                        </div>
-                    ))}
+                <div className={classes.nextRoot}>
+                    <Button
+                        className={classes.naviagteBtn}
+                        disabled={detailData.selectedIdx === 0 ? true : false} onClick={() => setDetailData({ ...detailData, selectedIdx: detailData.selectedIdx - 1 })}>
+                        <NavigateBeforeIcon />
+                    </Button>
+                    <SwipeableViews
+                        index={detailData.selectedIdx < recommendState.data.length - 1 ? detailData.selectedIdx : detailData.selectedIdx - 1}>
+                        {recommendState.data.filter((next, idx) => idx !== detailData.selectedIdx).map(next_item => (
+                            <div key={next_item.productId} className={classes.nextSwipeableRoot} >
+                                <img
+                                    alt="next_items"
+                                    src={next_item.image}
+                                    onClick={() => history.push(`${URLs.ProductDetail}?product_id=${next_item.productId}`)}
+                                />
+                            </div>
+                        ))}
 
-                </SwipeableViews>
+                    </SwipeableViews>
+                    <Button
+                        className={classes.naviagteBtn}
+                        disabled={detailData.selectedIdx + 2 >= recommendState.data.length ? true : false} onClick={() => setDetailData({ ...detailData, selectedIdx: detailData.selectedIdx + 1 })}>
+                        <NavigateNextIcon />
+                    </Button>
+                </div>
+
 
                 {drawerVisible ?
-                    <div style={{marginTop: 'auto'}}>
+                    <div style={{ marginTop: 'auto' }}>
                         <Hidden implementation="css" mdUp>
                             <Button
                                 color="primary"
@@ -234,7 +248,7 @@ const Detail = ({ location, history }) => {
                                 {localString(Strings.detail_favorite)}
                             </Button>
                         </Hidden>
-                        <Hidden implementation="css" smDown> 
+                        <Hidden implementation="css" smDown>
                             <Button
                                 color="primary"
                                 className={classNames(classes.btnDrawerNotFixed, classes.btnFav)}
@@ -255,7 +269,7 @@ const Detail = ({ location, history }) => {
                 }
 
             </Grid>
-        </Grid>
+        </Grid >
 
     )
 }

@@ -52,6 +52,7 @@ const Drawer = ({ mobileOpen, history, onClick }) => {
                     <div className={classes.categoryRoot}>
                         {user_data.selected_categories.sort((a, b) => localString(a.name).length > localString(b.name).length ? -1 : 1).map(category => (
                             <Chip
+                                key={category.cat_id}
                                 className={localString(category.name).length > 7 ? classes.longChip : classes.chip}
                                 label={localString(category.name)}
                                 variant="outlined" />

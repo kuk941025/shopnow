@@ -1,4 +1,5 @@
 import { DrawerWidth } from "../../libs/const";
+
 const DetailCss = (theme) => ({
     item: {
         [theme.breakpoints.up('md')]: {
@@ -19,7 +20,8 @@ const DetailCss = (theme) => ({
     },
     img: {
         width: '100%',
-
+        maxHeight: '90%', 
+        objectFit: 'contain',
         [theme.breakpoints.down('md')]: {
             paddingTop: `${theme.spacing(2)}px`,
         },
@@ -39,7 +41,7 @@ const DetailCss = (theme) => ({
         fontWeight: 600,
         fontSize: '1.2rem',
     },
-    nextItemRoot: {
+    nextSwipeableRoot: {
         display: 'flex',
         marginTop: theme.spacing(1),
         "& img": {
@@ -51,6 +53,15 @@ const DetailCss = (theme) => ({
                 cursor: "pointer"
             }
         }
+    },
+    nextRoot: {
+        display: 'flex', 
+        justifyContent: 'space-between',
+        marginTop: theme.spacing(1), 
+    },
+    naviagteBtn: {
+        minWidth: 40, 
+        width: 40,
     },
     flexRoot: {
         display: 'flex',

@@ -5,7 +5,7 @@ import Skeleton from "@material-ui/lab/Skeleton";
 import DetailCss from "./DetailCss";
 import classNames from "classnames";
 
-const DetailSkeleton = ({drawerVisible}) => {
+const DetailSkeleton = ({ drawerVisible }) => {
     const classes = useStyles();
     return (
         <Grid container spacing={2} className={classes.root}>
@@ -31,10 +31,10 @@ const DetailSkeleton = ({drawerVisible}) => {
                 <Skeleton className={classes.skelVMargins} width={200} variant="rect" />
                 <Skeleton className={classes.skelVMargins} width={250} variant="rect" />
                 <Skeleton className={classes.nextItems} width={100} variant="rect" />
-                <Skeleton className={classes.nextItemRoot} height={250} variant="rect" />
+                <Skeleton className={classes.nextRoot} height={250} variant="rect" />
                 {drawerVisible ?
                     <Skeleton className={classes.btnDrawer} width="100%" height={45} variant="rect" /> :
-                    <Skeleton style={{position: 'fixed'}} className={classes.btnNoDrawer} width="100%" height={45} variant="rect" />
+                    <Skeleton style={{ position: 'fixed' }} className={classes.btnNoDrawer} width="100%" height={45} variant="rect" />
                 }
             </Grid>
         </Grid>
