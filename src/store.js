@@ -5,13 +5,15 @@ import recommendsReducer from "./pages/recommends/RecommendsReducer";
 import { setUserData } from "./pages/settings/SettingsActions";
 
 export const configureStore = () => {
+    const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
     const store = createStore(
         combineReducers({
             settings: settingsReducer,
             recommends: recommendsReducer, 
         }),
         {},
-        compose(applyMiddleware(thunk))
+        composeEnhancers(applyMiddleware(thunk))
     );
 
     let user_data = localStorage.getItem("userdata");
