@@ -9,11 +9,13 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import { SettingEvents } from "./SettingsConst";
+import classNames from "classnames";
 
-const Category = ({ main_categories, checked = [], onClick }) => {
+const Category = ({ main_categories, checked = [], onClick, showClose }) => {
     const classes = useStyles();
     return (
-        <List className={classes.root}>
+        <List
+            className={classNames(classes.root, showClose ? classes.rootClose : classes.rootNoClose)}>
 
             {main_categories && main_categories.map(main_category => (
                 <React.Fragment key={localString(main_category.title)}>
@@ -54,6 +56,11 @@ const Category = ({ main_categories, checked = [], onClick }) => {
 const useStyles = makeStyles(theme => ({
     root: {
         overflow: 'auto',
+    },
+    rootClose: {
+        maxHeight: `calc(100vh - 220px)`
+    },
+    rootNoClose: {
         maxHeight: `calc(100vh - 170px)`
     },
     formLabel: {

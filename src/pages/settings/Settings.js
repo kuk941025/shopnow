@@ -17,6 +17,8 @@ import Loading from "../../layouts/loading/Loading";
 import update from "immutability-helper";
 import URLs from "../../libs/urls";
 import ErrorPage from "../error_page/ErrorPage";
+import CloseIcon from "@material-ui/icons/Close";
+import IconButton from "@material-ui/core/IconButton";
 
 const Settings = ({ history }) => {
     const classes = useStyles();
@@ -25,6 +27,7 @@ const Settings = ({ history }) => {
     const [gender, setGender] = useState('');
     const [age, setAge] = useState(20);
     const [checked, setChecked] = useState({});
+    const [showClose, setShowClose] = useState(true);
     const { loading, categories, user_data, err } = useSelector(state => state.settings);
 
     useEffect(() => {
@@ -33,7 +36,10 @@ const Settings = ({ history }) => {
 
     //Init user data if exists
     useEffect(() => {
-        if (!user_data) return;
+        if (!user_data) {
+            setShowClose(false);
+            return;
+        };
 
         setGender(user_data.gender);
         setAge(user_data.age);
@@ -93,10 +99,17 @@ const Settings = ({ history }) => {
             />
         )
     }
-    
+
     return (
         <div className={classes.root}>
             <Container maxWidth="sm" className={classes.container}>
+                {showClose &&
+                    <div className={classes.iconRoot}>
+                        <IconButton onClick={() => history.push(URLs.Main)}>
+                            <CloseIcon />
+                        </IconButton>
+                    </div>
+                }
                 <Stepper activeStep={steps} className={classes.stepper}>
                     {localString(Strings.settings_steps).map(step => (
                         <Step key={step}>
@@ -106,7 +119,12 @@ const Settings = ({ history }) => {
                 </Stepper>
                 <div className={classes.contents}>
                     {steps === 0 && <AgeGender onClick={handleClick} gender={gender} age={age} />}
-                    {steps === 1 && <Category onClick={handleClick} main_categories={categories} checked={checked} />}
+                    {steps === 1 &&
+                        <Category
+                            showClose={showClose}
+                            onClick={handleClick}
+                            main_categories={categories}
+                            checked={checked} />}
                 </div>
                 <div className={classes.buttonRoot}>
                     {steps === 0 &&
@@ -176,6 +194,13 @@ const useStyles = makeStyles(theme => ({
         flex: 1,
         borderRadius: 3,
         height: 50,
+    },
+    iconRoot: {
+        display: 'flex',
+        marginLeft: 'auto',
+        "& svg": {
+            color: theme.palette.secondary.main
+        }
     }
 }))
 export default Settings
