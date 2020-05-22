@@ -11,3 +11,7 @@
 https://developers.naver.com/products/intro/plan/
 - 데이터랩 (쇼핑인사이트)
 - 검색
+
+
+### 호스팅
+https://todayshop.shop/
