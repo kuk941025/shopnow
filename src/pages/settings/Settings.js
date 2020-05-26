@@ -28,11 +28,14 @@ const Settings = ({ history }) => {
     const [age, setAge] = useState(20);
     const [checked, setChecked] = useState({});
     const [showClose, setShowClose] = useState(true);
-    const { loading, categories, user_data, err } = useSelector(state => state.settings);
+    const { loading, categories, user_data, err, precached } = useSelector(state => state.settings);
 
     useEffect(() => {
-        dispatch(getCategories());
-    }, [dispatch]);
+        //if not precached, getCategories is called in store.js when receives a message from the service worker
+        if (precached) {
+            dispatch(getCategories());
+        }
+    }, [])
 
     //Init user data if exists
     useEffect(() => {

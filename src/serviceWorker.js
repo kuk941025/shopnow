@@ -45,13 +45,17 @@ export function register(config) {
             'This web app is being served cache-first by a service ' +
             'worker. To learn more, visit https://bit.ly/CRA-PWA'
           );
+
+
         });
       } else {
         // Is not localhost. Just register service worker
         registerValidSW(swUrl, config);
       }
+
     });
   }
+  else postMessage("serviceworker done")
 }
 
 function registerValidSW(swUrl, config) {
@@ -64,7 +68,12 @@ function registerValidSW(swUrl, config) {
           return;
         }
         installingWorker.onstatechange = () => {
+          if (installingWorker.state === "activated") {
+            postMessage("serviceworker done")
+          }
+
           if (installingWorker.state === 'installed') {
+
             if (navigator.serviceWorker.controller) {
               // At this point, the updated precached content has been fetched,
               // but the previous service worker will still serve the older
@@ -94,6 +103,7 @@ function registerValidSW(swUrl, config) {
       };
     })
     .catch(error => {
+      postMessage("serviceworker done")
       console.error('Error during service worker registration:', error);
     });
 }

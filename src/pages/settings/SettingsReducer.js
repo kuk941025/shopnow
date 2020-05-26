@@ -7,7 +7,8 @@ const initState = {
     err: {
         value: false,
         msg: ''
-    }
+    },
+    precached: true, 
 }
 
 const SettingsReducer = (state = initState, action) => {
@@ -39,6 +40,11 @@ const SettingsReducer = (state = initState, action) => {
                     value: true, 
                     msg: "Network Error"
                 }
+            }
+        case SettingsActionType.notPrecached:
+            return {
+                ...state,
+                precached: false, 
             }
         default:
             return state;
