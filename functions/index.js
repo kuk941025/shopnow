@@ -48,9 +48,17 @@ exports.getRecommends = functions.https.onRequest((req, res) => {
             let top_trends = [];
 
             trends_snap.forEach((snap, idx) => {
-                let trend_data = snap.docs[0].data();
+                const trend_data = snap.docs[0].data();
                 
-                if (gender === "m") {
+                //trend_data.name[1] == korean; uses a korean keyword to search for shopping API
+                if (gender === "b") {
+                    top_trends.push({
+                        ...trend_data.both.find(both_data => both_data.group === age),
+                        name: trend_data.name[1],
+                        cat_id: category_ids[idx]
+                    })
+                }
+                else if (gender === "m") {
                     top_trends.push({
                         ...trend_data.male.find(male_data => male_data.group === age),
                         name: trend_data.name[1],
@@ -128,7 +136,7 @@ exports.updateTrends = functions.https.onRequest((req, res) => {
             let promises = [];
 
             for (let category of categories_data) {
-                ["m", "f"].forEach(gender => {
+                ["m", "f", ""].forEach(gender => {
                     promises.push(
                         axios.post(`${baseURL}/datalab/shopping/category/age`, {
                             "startDate": date,
@@ -154,19 +162,22 @@ exports.updateTrends = functions.https.onRequest((req, res) => {
 
             let idx = 0;
             for (let category of categories_data) {
-                let male_data = promises_snaps[idx].data.results[0].data;
-                let female_data = promises_snaps[idx + 1].data.results[0].data;
+                const male_data = promises_snaps[idx].data.results[0].data;
+                const female_data = promises_snaps[idx + 1].data.results[0].data;
+                const both_data = promises_snaps[idx + 2].data.results[0].data;
 
-                if (male_data.length === 0 || female_data.length === 0) continue;
+                if (male_data.length === 0 || female_data.length === 0 || both_data.length === 0) continue;
                 batch.set(db.doc(`categories/${category.id}/trends/${date}`), {
                     male: male_data,
                     felmale: female_data,
+                    both: both_data, 
                     name: category.name,
                     created_at: cur_date 
                 });
 
                 idx += 2;
             }
+
             await batch.commit();
             res.send({ success: true });
 
