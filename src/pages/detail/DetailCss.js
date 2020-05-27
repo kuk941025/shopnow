@@ -10,7 +10,9 @@ const DetailCss = (theme) => ({
         [theme.breakpoints.up('md')]: {
             display: 'flex',
             alignItems: 'center',
+            flexDirection: 'column'
         },
+        margin: 'auto', 
     },
     itemDescrp: {
         [theme.breakpoints.up('md')]: {
@@ -23,7 +25,7 @@ const DetailCss = (theme) => ({
         maxHeight: '90%', 
         objectFit: 'contain',
         [theme.breakpoints.down('md')]: {
-            paddingTop: `${theme.spacing(2)}px`,
+            paddingTop: `${theme.spacing(1)}px`,
         },
     },
     root: {
@@ -81,24 +83,28 @@ const DetailCss = (theme) => ({
         position: 'fixed',
         left: 0,
         bottom: 0,
-        borderRadius: 3,
+        display: 'flex',
+        width: '100%'
     },
     btnFav: {
-        borderRadius: 3
+        flex: 1,
+        borderRadius: 0, 
     },
     btnDrawerFixed: {
         position: 'fixed',
         left: DrawerWidth,
         bottom: 0,
         width: `calc(100% - ${DrawerWidth}px)`,
+        display: 'flex',
     },
     btnDrawerNotFixed: {
         marginTop: 'auto',
-        width: '100%'
+        width: '100%',
+        display: 'flex'
     },
     skelVMargins: {
         margin: `${theme.spacing(0.5)}px 0px`
-    }
+    },
 });
 
 export default DetailCss;

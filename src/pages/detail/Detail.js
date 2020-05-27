@@ -24,6 +24,9 @@ const DetailErrorType = {
     invalidId: "DetailInvalidProducTID",
     network: "DetailNetworkError"
 }
+const DetailClickType = {
+    back: "DetailBackClicked",
+}
 const Detail = ({ location, history }) => {
     const classes = useStyles();
     const theme = useTheme();
@@ -127,6 +130,15 @@ const Detail = ({ location, history }) => {
 
     }, [recommendState, location])
 
+    const handleClick = action => {
+        switch (action.type) {
+            case DetailClickType.back:
+                history.goBack();
+                break;
+            default:
+                break;
+        }
+    }
 
     if (!detailData.loaded)
         return <DetailSkeleton drawerVisible={drawerVisible} />
@@ -162,11 +174,14 @@ const Detail = ({ location, history }) => {
 
     return (
         <Grid container spacing={2} className={classes.root}>
+
             <Grid
                 item
                 className={classNames(classes.item, classes.itemImg)}
                 xs={12}
                 md={6}>
+
+
                 <img
                     alt="product_detail"
                     className={classes.img}
@@ -240,32 +255,62 @@ const Detail = ({ location, history }) => {
                 {drawerVisible ?
                     <div style={{ marginTop: 'auto' }}>
                         <Hidden implementation="css" mdUp>
-                            <Button
-                                color="primary"
-                                className={classNames(classes.btnDrawerFixed, classes.btnFav)}
-                                variant="contained"
-                                disableElevation>
-                                {localString(Strings.detail_favorite)}
-                            </Button>
+                            <div className={classes.btnDrawerFixed}>
+                                <Button
+                                    onClick={() => handleClick({ type: DetailClickType.back })}
+                                    className={classes.btnFav}
+                                    variant="contained"
+                                    disableElevation>
+                                    {localString(Strings.detail_back)}
+                                </Button>
+                                <Button
+                                    color="primary"
+                                    className={classes.btnFav}
+                                    variant="contained"
+                                    disableElevation>
+                                    {localString(Strings.detail_favorite)}
+                                </Button>
+                            </div>
+
                         </Hidden>
                         <Hidden implementation="css" smDown>
-                            <Button
-                                color="primary"
-                                className={classNames(classes.btnDrawerNotFixed, classes.btnFav)}
-                                variant="contained"
-                                disableElevation>
-                                {localString(Strings.detail_favorite)}
-                            </Button>
+                            <div className={classes.btnDrawerNotFixed}>
+                                <Button
+                                    onClick={() => handleClick({ type: DetailClickType.back })}
+                                    className={classes.btnFav}
+                                    variant="contained"
+                                    disableElevation>
+                                    {localString(Strings.detail_back)}
+                                </Button>
+                                <Button
+                                    color="primary"
+                                    className={classes.btnFav}
+                                    variant="contained"
+                                    disableElevation>
+                                    {localString(Strings.detail_favorite)}
+                                </Button>
+                            </div>
+
                         </Hidden>
                     </div>
                     :
-                    <Button
-                        color="primary"
-                        fullWidth
-                        className={classNames(classes.btnNoDrawer, classes.btnFav)}
-                        variant="contained" >
-                        {localString(Strings.detail_favorite)}
-                    </Button>
+                    <div className={classes.btnNoDrawer}>
+                        <Button
+                            fullWidth
+                            onClick={() => handleClick({ type: DetailClickType.back })}
+                            className={classNames(classes.btnFav)}
+                            variant="contained" >
+                            {localString(Strings.detail_back)}
+                        </Button>
+                        <Button
+                            color="primary"
+                            fullWidth
+                            className={classNames(classes.btnFav)}
+                            variant="contained" >
+                            {localString(Strings.detail_favorite)}
+                        </Button>
+                    </div>
+
                 }
 
             </Grid>
