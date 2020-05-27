@@ -47,7 +47,7 @@ const Drawer = ({ mobileOpen, history, onClick }) => {
                         {`${user_data.age}${localString(Strings.drawer_age)}`}
                     </Typography>
                     <Typography variant="body1" gutterBottom>
-                        {localString(user_data.gender === "male" ? Strings.drawer_male : Strings.drawer_female)}
+                        {localString(user_data.gender === "both" ? Strings.drawer_both : user_data.gender === "male" ? Strings.drawer_male : Strings.drawer_female)}
                     </Typography>
                     <div className={classes.categoryRoot}>
                         {user_data.selected_categories.sort((a, b) => localString(a.name).length > localString(b.name).length ? -1 : 1).map(category => (

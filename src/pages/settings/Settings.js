@@ -24,7 +24,7 @@ const Settings = ({ history }) => {
     const classes = useStyles();
     const dispatch = useDispatch();
     const [steps, setSteps] = useState(0);
-    const [gender, setGender] = useState('');
+    const [gender, setGender] = useState('both');
     const [age, setAge] = useState(20);
     const [checked, setChecked] = useState({});
     const [showClose, setShowClose] = useState(true);

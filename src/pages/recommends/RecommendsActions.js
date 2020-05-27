@@ -19,7 +19,7 @@ export const getRecommends = () => async (dispatch, getState) => {
     const { params } = state.recommends;
 
     let req_params = {
-        gender: user_data.gender === "male" ? "m" : "f",
+        gender: user_data.gender === "both" ? "b" : user_data.gender === "male" ? "m" : "f",
         date: moment().format("YYYY-MM-DD"),
         age: user_data.age,
         categories: user_data.selected_categories.map(category => category.cat_id).join(",")

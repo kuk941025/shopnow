@@ -11,8 +11,7 @@ import { SettingEvents } from "./SettingsConst";
 const AgeGender = ({ gender, onClick, age }) => {
     const classes = useStyles();
 
-    
-    
+
     return (
         <div className={classes.root}>
             <Typography variant="body1" className={classes.title} gutterBottom>
@@ -21,13 +20,16 @@ const AgeGender = ({ gender, onClick, age }) => {
             <ToggleButtonGroup
                 exclusive
                 value={gender}
-                onChange={(e, value) => onClick({type: SettingEvents.onGender, data: value})}
-            >   
+                onChange={(e, value) => onClick({ type: SettingEvents.onGender, data: value })}
+            >
                 <ToggleButton value="male" className={classes.toggleButton}>
                     {localString(Strings.settings_male)}
                 </ToggleButton>
                 <ToggleButton value="female" className={classes.toggleButton}>
                     {localString(Strings.settings_female)}
+                </ToggleButton>
+                <ToggleButton value="both" className={classes.toggleButton}>
+                    {localString(Strings.settings_both)}
                 </ToggleButton>
             </ToggleButtonGroup>
 
@@ -37,7 +39,7 @@ const AgeGender = ({ gender, onClick, age }) => {
                 </Typography>
 
                 <Slider
-                    onChange={(e, value) => onClick({type: SettingEvents.onAge, data: value})}
+                    onChange={(e, value) => onClick({ type: SettingEvents.onAge, data: value })}
                     valueLabelDisplay="auto"
                     value={age}
                     step={10}

@@ -2,6 +2,7 @@ const Strings = {
     settings_age: ["Age", "나이"],
     settings_male: ["Male", "남자"],
     settings_female: ["Female", "여자"],
+    settings_both: ["Both", "남녀"],
     settings_gender: ["Gender", "성별"],
     settings_next: ["Next", "다음"],
     settings_prev: ["Previous", "뒤로"],
@@ -23,9 +24,11 @@ const Strings = {
     drawer_age: ["'S", "대"],
     drawer_male: ["Male", "남자"],
     drawer_female: ["Female", "여자"],
+    drawer_both: ["Both", "남녀"],
 
     error_wrong_url: ["Wrong URL", "잘못된 URL입니다."],
 
+    detail_back: ["Back", "뒤로가기"],
     detail_favorite: ["Favorite", "즐겨찾기"],
     detail_next_items: ["Next Items", "다음 아이템"],
     detail_general_product: ["General Product", "일반상품"],
