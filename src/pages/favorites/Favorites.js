@@ -33,7 +33,7 @@ const Favorites = ({ history }) => {
     return (
 
         <Grid container spacing={3}>
-            {favorites.map((item, idx) => (
+            {favorites.sort((a, b) => (new Date(b.created_at) - new Date(a.created_at))).map((item, idx) => (
                 <ProductItem
                     favorited={true}
                     onFavClick={() => handleFavorite(item)}
