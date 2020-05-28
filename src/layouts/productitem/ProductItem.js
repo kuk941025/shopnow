@@ -6,6 +6,7 @@ import Card from "@material-ui/core/Card"
 import CardActionArea from "@material-ui/core/CardActionArea";
 import IconButton from "@material-ui/core/IconButton";
 import FavoriteIcon from "@material-ui/icons/Favorite";
+import FavoriteOutlinedIcon from "@material-ui/icons/FavoriteBorder";
 import Skeleton from "@material-ui/lab/Skeleton";
 import Strings from "../../libs/strings";
 import { localString } from "../../libs/utils";
@@ -45,8 +46,13 @@ const ProductItem = ({ onClick, onFavClick, data }) => {
                                 <Typography variant="body1" className={classes.price}>
                                     {`${Number(data.lprice).toLocaleString()}${localString(Strings.item_won)}`}
                                 </Typography>
-                                <IconButton>
-                                    <FavoriteIcon className={classes.icon} />
+                                <IconButton onClick={() => onFavClick(data)}>
+                                    {Number(data.productId) % 2 === 0 ?
+                                        <FavoriteIcon className={classes.icon} />
+                                        :
+                                        <FavoriteOutlinedIcon className={classes.icon} />
+                                    }
+
                                 </IconButton>
                             </div>
                             <div >

@@ -17,6 +17,10 @@ const Recommends = ({ history }) => {
         dispatch(getRecommends());
     }, [dispatch]);
 
+    const handleFavClick = (product) => {
+        console.log(product);
+    }
+
     if (recommendState.err.value) {
         switch (recommendState.err.msg) {
             case RecommendErrorType.network:
@@ -38,6 +42,7 @@ const Recommends = ({ history }) => {
         <Grid container spacing={3}>
             {recommendState.data.map((product) => (
                 <ProductItem
+                    onFavClick={handleFavClick}
                     data={product}
                     onClick={() => history.push(`${URLs.ProductDetail}?product_id=${product.productId}`)}
                     key={product.productId} />
