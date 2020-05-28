@@ -8,6 +8,7 @@ import { getRecommends, RecommendErrorType } from "./RecommendsActions";
 import ErrorPage from "../error_page/ErrorPage";
 import { localString } from "../../libs/utils";
 import Strings from "../../libs/strings";
+import { addFavorite } from "../favorites/FavoritesActions";
 
 const Recommends = ({ history }) => {
     const dispatch = useDispatch();
@@ -18,7 +19,7 @@ const Recommends = ({ history }) => {
     }, [dispatch]);
 
     const handleFavClick = (product) => {
-        console.log(product);
+        dispatch(addFavorite(product));
     }
 
     if (recommendState.err.value) {

@@ -1,8 +1,10 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Grid from "@material-ui/core/Grid";
 import ProductItem from "../../layouts/productitem/ProductItem";
 import { withRouter } from "react-router-dom";
 import URLs from "../../libs/urls";
+import { getFavorites, removeFavorite } from "./FavoritesActions";
+import { useDispatch, useSelector } from "react-redux";
 
 let productItems = [];
 const setProductItems = () => {
@@ -17,12 +19,29 @@ const setProductItems = () => {
 setProductItems();
 
 const Favorites = ({ history }) => {
+    const dispatch = useDispatch();
+    const { favorites } = useSelector(state => state.favorite);
+
+    useEffect(() => {
+        dispatch(getFavorites());
+    }, [])
+
+    const handleFavorite = product => {
+        dispatch(removeFavorite(product));
+    }
+
     return (
+
         <Grid container spacing={3}>
-            {productItems.map((item, idx) => (
-                <ProductItem data={item} onClick={() => history.push(`${URLs.ProductDetail}?product_id=${idx}`)} key={idx} />
+            {favorites.map((item, idx) => (
+                <ProductItem
+                    onFavClick={() => handleFavorite(item)}
+                    data={item}
+                    onClick={() => history.push(`${URLs.ProductDetail}?product_id=${item.productId}`)}
+                    key={item.productId} />
             ))}
         </Grid>
+
     )
 }
 
