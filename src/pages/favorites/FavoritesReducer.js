@@ -1,7 +1,8 @@
 import { FavoriteActionType } from "./FavoritesActions";
 import update from "immutability-helper";
 const initState = {
-    favorites: []
+    favorites: [],
+    completed: false,
 }
 
 const favoritesReducer = (state = initState, action) => {
@@ -9,7 +10,8 @@ const favoritesReducer = (state = initState, action) => {
         case FavoriteActionType.load:
             return {
                 ...state,
-                favorites: action.data
+                favorites: action.data,
+                completed: true
             }
         case FavoriteActionType.add:
             return update(state, {

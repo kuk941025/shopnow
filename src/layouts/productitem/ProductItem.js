@@ -11,7 +11,7 @@ import Skeleton from "@material-ui/lab/Skeleton";
 import Strings from "../../libs/strings";
 import { localString } from "../../libs/utils";
 
-const ProductItem = ({ onClick, onFavClick, data }) => {
+const ProductItem = ({ onClick, onFavClick, data, favorited = false }) => {
     const classes = useStyles();
     const ShowSkeleton = () => {
         return (
@@ -47,12 +47,11 @@ const ProductItem = ({ onClick, onFavClick, data }) => {
                                     {`${Number(data.lprice).toLocaleString()}${localString(Strings.item_won)}`}
                                 </Typography>
                                 <IconButton onClick={() => onFavClick(data)}>
-                                    {Number(data.productId) % 2 === 0 ?
+                                    {favorited ?
                                         <FavoriteIcon className={classes.icon} />
                                         :
                                         <FavoriteOutlinedIcon className={classes.icon} />
                                     }
-
                                 </IconButton>
                             </div>
                             <div >

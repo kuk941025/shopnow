@@ -35,6 +35,7 @@ const Favorites = ({ history }) => {
         <Grid container spacing={3}>
             {favorites.map((item, idx) => (
                 <ProductItem
+                    favorited={true}
                     onFavClick={() => handleFavorite(item)}
                     data={item}
                     onClick={() => history.push(`${URLs.ProductDetail}?product_id=${item.productId}`)}

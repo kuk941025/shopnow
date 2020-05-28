@@ -5,6 +5,7 @@ import * as serviceWorker from './serviceWorker';
 import { ThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import { Provider } from "react-redux";
 import { configureStore } from "./store";
+import { getFavorites } from "./pages/favorites/FavoritesActions";
 
 const theme = createMuiTheme({
   typography: {
@@ -28,6 +29,7 @@ const theme = createMuiTheme({
 })
 
 const store = configureStore();
+store.dispatch(getFavorites());
 
 ReactDOM.render(
   <React.StrictMode>
@@ -40,4 +42,4 @@ ReactDOM.render(
   document.getElementById('root')
 );
 
-serviceWorker.register();
+serviceWorker.unregister();
