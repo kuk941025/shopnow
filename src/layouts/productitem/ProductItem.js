@@ -10,7 +10,7 @@ import FavoriteOutlinedIcon from "@material-ui/icons/FavoriteBorder";
 import Skeleton from "@material-ui/lab/Skeleton";
 import Strings from "../../libs/strings";
 import { localString } from "../../libs/utils";
-
+import NoImg from "../../assets/no_image.png"
 const ProductItem = ({ onClick, onFavClick, data, favorited = false }) => {
     const classes = useStyles();
     const ShowSkeleton = () => {
@@ -34,8 +34,14 @@ const ProductItem = ({ onClick, onFavClick, data, favorited = false }) => {
                     <>
                         <CardActionArea onClick={onClick}>
                             <div variant="body1" className={classes.imgRoot}>
-                                <img alt="product_img" className={classes.img}
+
+                                <img
+                                    onError={(event) => event.target.setAttribute("src", NoImg)}
+                                    alt="product_img"
+                                    className={classes.img}
                                     src={data.image} />
+
+
                                 <Typography className={classes.titleRoot} >
                                     {data.title}
                                 </Typography>
