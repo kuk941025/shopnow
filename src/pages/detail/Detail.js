@@ -314,7 +314,7 @@ const Detail = ({ location, history }) => {
                 }
 
             </Grid>
-        </Grid >
+        </Grid>
 
     )
 }
