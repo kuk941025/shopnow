@@ -19,7 +19,7 @@ export const getFavorites = () => async dispatch => {
 export const addFavorite = (product) => async dispatch => {
 
     await db.favorites.put(product);
-    dispatch({ type: FavoriteActionType.load, data: product });
+    dispatch({ type: FavoriteActionType.add, data: product });
 }
 
 export const removeFavorite = product => async dispatch => {
