@@ -26,9 +26,7 @@ export const getCategories = () => async dispatch => {
 }
 
 export const setUserData = (data) => dispatch => {
-    analytics.logEvent("user setting", {
-        ...data
-    })
+    analytics.logEvent("user setting", data);
     dispatch({ type: SettingsActionType.setUser, data });
 }
 

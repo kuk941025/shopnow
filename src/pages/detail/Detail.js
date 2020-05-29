@@ -86,7 +86,7 @@ const Detail = ({ location, history }) => {
             });
             return;
         }
-        if (completed) {
+        if (completed && favoriteState.completed) {
             //if error has occured from retrieving recommenddata from server
             if (err.value) {
                 setDetailData({
@@ -103,8 +103,16 @@ const Detail = ({ location, history }) => {
                 const { product_id } = qs.parse(location.search);
                 const recommendData = recommendState.data;
                 try {
-                    const selectedIdx = recommendData.findIndex(item => item.productId === product_id);
-                    const selected = recommendData[selectedIdx];
+                    //first find item in recommend data, if not found find in favorite data
+                    let selected = null;
+                    let selectedIdx = recommendData.findIndex(item => item.productId === product_id);
+
+                    if (selectedIdx >= 0)
+                        selected = recommendData[selectedIdx];
+                    else {
+                        selectedIdx = favoriteState.favorites.findIndex(item => item.productId === product_id);
+                        selected = favoriteState.favorites[selectedIdx]; 
+                    }
                     let productTypeString = "";
 
                     const productType = Number(selected.productType);
@@ -142,7 +150,7 @@ const Detail = ({ location, history }) => {
             }
         }
 
-    }, [recommendState, location])
+    }, [recommendState, favoriteState, location])
 
     const handleClick = action => {
         switch (action.type) {
