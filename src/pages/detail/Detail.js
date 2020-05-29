@@ -71,36 +71,42 @@ const Detail = ({ location, history }) => {
     }, [favoriteState, detailData])
 
     useEffect(() => {
-        let { data, err, completed } = recommendState;
+        const { product_id } = qs.parse(location.search);
+        const { data, err, completed } = recommendState;
+
+        if (detailData.product && detailData.product.productId === product_id){
+            //if data is already loaded, end the function
+            return;
+        }
+
 
         //if no recommended data, and not requested getRecommends to the server
         if (!completed && data.length === 0) {
             dispatch(getRecommends());
-            setDetailData({
-                ...detailData,
+            setDetailData(prev => ({
+                ...prev,
                 err: {
                     value: false,
                     msg: ''
                 },
-                loaded: false,
-            });
+                loaded: false
+            }));
             return;
         }
         if (completed && favoriteState.completed) {
             //if error has occured from retrieving recommenddata from server
             if (err.value) {
-                setDetailData({
-                    ...detailData,
+                setDetailData(prev => ({
+                    ...prev, 
                     err: {
                         value: true,
                         msg: err.msg,
                     },
-                    loaded: true
-                })
+                    loaded: true 
+                }))
             }
             //if no error, find selected product from given product id
             else {
-                const { product_id } = qs.parse(location.search);
                 const recommendData = recommendState.data;
                 try {
                     //first find item in recommend data, if not found find in favorite data
@@ -135,22 +141,24 @@ const Detail = ({ location, history }) => {
                         },
                         loaded: true
                     });
+
                 } catch (err) {
                     //if no product id is found from recommended data
-                    setDetailData({
-                        ...detailData,
+                    setDetailData(prev => ({
+                        ...prev, 
                         err: {
                             value: true,
                             msg: DetailErrorType.invalidId
                         },
                         loaded: true
-                    });
+                    }))
+
                     return;
                 }
             }
         }
 
-    }, [recommendState, favoriteState, location])
+    }, [recommendState, favoriteState, location, dispatch, detailData.product])
 
     const handleClick = action => {
         switch (action.type) {
