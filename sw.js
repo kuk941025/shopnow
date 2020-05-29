@@ -69,7 +69,7 @@ workbox.routing.registerRoute(
         cacheName: 'shopping-images',
         plugins: [
             new workbox.expiration.ExpirationPlugin({
-                maxEntries: 100
+                maxEntries: 200
             })
         ]
     })
