@@ -208,7 +208,7 @@ const Detail = ({ location, history }) => {
             </Grid>
             <Grid item className={classNames(classes.item, classes.itemDescrp)} xs={12} md={6}>
                 <Typography varaint="body1" className={classes.title}>
-                    {product.title}
+                    {product.title.replace(/<b>/g, "").replace(/<\/b>/g, "")}
                 </Typography>
                 <div className={classes.flexRoot}>
                     <Typography className={classes.price} variant="body1">

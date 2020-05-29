@@ -41,7 +41,7 @@ const ProductItem = ({ onClick, onFavClick, data, favorited = false }) => {
                                     src={data.image} />
 
                                 <Typography className={classes.titleRoot} >
-                                    {data.title}
+                                    {data.title.replace(/<b>/g, "").replace(/<\/b>/g, "")}
                                 </Typography>
                             </div>
                         </CardActionArea>
