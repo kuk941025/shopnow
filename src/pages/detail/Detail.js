@@ -150,11 +150,10 @@ const Detail = ({ location, history }) => {
                 history.goBack();
                 break;
             case DetailClickType.fav:
-                if (isFav) 
+                if (isFav)
                     dispatch(removeFavorite(detailData.product));
-                else 
+                else
                     dispatch(addFavorite(detailData.product));
-                
 
                 break;
             default:
@@ -213,7 +212,9 @@ const Detail = ({ location, history }) => {
                 </Typography>
                 <div className={classes.flexRoot}>
                     <Typography className={classes.price} variant="body1">
-                        {`${Number(product.lprice).toLocaleString()}~${Number(product.hprice).toLocaleString()}`}
+                        {product.hprice === "0" ?
+                            `${Number(product.lprice).toLocaleString()}` :
+                            `${Number(product.lprice).toLocaleString()}~${Number(product.hprice).toLocaleString()}`}
                         {` ${localString(Strings.item_won)}`}
                     </Typography>
                     <Typography style={{ marginLeft: 'auto' }} variant="body1">
@@ -252,7 +253,7 @@ const Detail = ({ location, history }) => {
                     </Button>
                     <SwipeableViews
                         index={detailData.selectedIdx < recommendState.data.length - 1 ? detailData.selectedIdx : detailData.selectedIdx - 1}>
-                        {recommendState.data.filter((next, idx) => idx !== detailData.selectedIdx).map(next_item => (
+                        {recommendState.data.filter((next, idx) => next.productId !== product.productId).map(next_item => (
                             <div key={next_item.productId} className={classes.nextSwipeableRoot} >
                                 <img
                                     alt="next_items"

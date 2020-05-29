@@ -24,6 +24,7 @@ const DetailCss = (theme) => ({
         width: '100%',
         maxHeight: '90%', 
         objectFit: 'contain',
+        margin: 'auto', 
         [theme.breakpoints.down('md')]: {
             paddingTop: `${theme.spacing(1)}px`,
         },
