@@ -19,6 +19,7 @@ import URLs from "../../libs/urls";
 import ErrorPage from "../error_page/ErrorPage";
 import CloseIcon from "@material-ui/icons/Close";
 import IconButton from "@material-ui/core/IconButton";
+import { showMessage } from "../../layouts/snackbar/SnackAction";
 
 const Settings = ({ history }) => {
     const classes = useStyles();
@@ -76,7 +77,7 @@ const Settings = ({ history }) => {
                 })
 
                 if (cnt < 5) {
-                    alert(localString(Strings.settings_category_error));
+                    dispatch(showMessage(localString(Strings.settings_category_error)));
                     return;
                 }
 
