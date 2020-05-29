@@ -10,15 +10,12 @@ import Search from "../search/Search";
 import ErrorPage from "../error_page/ErrorPage";
 import URLs from "../../libs/urls";
 import LangDialog from "../../layouts/langdialog/LangDialog";
-import HistoryPopper from "../../layouts/history_popper/HistoryPopper";
 import { MainClickType } from "./MainConst";
 import { Redirect } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { localString, setLangCode } from "../../libs/utils";
 import Strings from "../../libs/strings";
-
-
-
+// import HistoryPopper from "../../layouts/history_popper/HistoryPopper";
 
 const Main = ({ location, history }) => {
     const classes = useStyles();
@@ -84,7 +81,7 @@ const Main = ({ location, history }) => {
                 {getContents()}
             </main>
 
-            <HistoryPopper onClick={handleClick} anchorEl={anchorEl} />
+            {/* <HistoryPopper onClick={handleClick} anchorEl={anchorEl} /> */}
             <LangDialog open={langDialog} handleClick={handleClick} />
         </div>
     )

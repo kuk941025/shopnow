@@ -27,9 +27,9 @@ const Toolbar = ({ onClick }) => {
                 <div className={classes.toolRoot}>
                     <Search />
                     <div >
-                        <IconButton onClick={(e) => onClick({ type: MainClickType.noti, data: e.currentTarget})}>
+                        {/* <IconButton onClick={(e) => onClick({ type: MainClickType.noti, data: e.currentTarget})}>
                             <NotiIcon />
-                        </IconButton>
+                        </IconButton> */}
                         <IconButton onClick={() => onClick({ type: MainClickType.lang })}>
                             <LangIcon />
                         </IconButton>
