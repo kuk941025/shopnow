@@ -55,6 +55,8 @@ const useStyles = makeStyles(theme => ({
     },
     form: {
         display: 'flex',
+        alignItems: 'center',
+        height: '100%'
     }
 }))
 export default withRouter(Search);
