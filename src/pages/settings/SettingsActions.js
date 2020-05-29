@@ -1,5 +1,6 @@
 import axios from "axios";
 import { BaseURL } from "../../libs/const";
+import { analytics } from "../../libs/fbconfig";
 
 export const SettingsActionType = {
     request: "requestCategory",
@@ -13,7 +14,6 @@ export const SettingsActionType = {
 export const getCategories = () => async dispatch => {
     try {
         dispatch({ type: SettingsActionType.request });
-        console.log ('called');
         let resp = await axios.get(`${BaseURL}/getCategories`);
 
         let { data } = resp.data;
@@ -26,6 +26,9 @@ export const getCategories = () => async dispatch => {
 }
 
 export const setUserData = (data) => dispatch => {
+    analytics.logEvent("user setting", {
+        ...data
+    })
     dispatch({ type: SettingsActionType.setUser, data });
 }
 

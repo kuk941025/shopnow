@@ -9,6 +9,7 @@ import ErrorPage from "../error_page/ErrorPage";
 import { localString } from "../../libs/utils";
 import Strings from "../../libs/strings";
 import { addFavorite, removeFavorite } from "../favorites/FavoritesActions";
+import { analytics } from "../../libs/fbconfig";
 
 const Recommends = ({ history }) => {
     const dispatch = useDispatch();
@@ -40,8 +41,14 @@ const Recommends = ({ history }) => {
 
         if (favlist[idx])
             dispatch(removeFavorite(product));
-        else 
+        else
             dispatch(addFavorite(product));
+    }
+
+    const handleClick = (product) => {
+        history.push(`${URLs.ProductDetail}?product_id=${product.productId}`)
+        const { image, link, loading, ...productData } = product;
+        analytics.logEvent("product_clicked", productData);
     }
 
     if (recommendState.err.value) {
@@ -68,7 +75,7 @@ const Recommends = ({ history }) => {
                     favorited={favlist && favlist[idx] ? true : false}
                     onFavClick={(product) => handleFavClick(product, idx)}
                     data={product}
-                    onClick={() => history.push(`${URLs.ProductDetail}?product_id=${product.productId}`)}
+                    onClick={() => handleClick(product)}
                     key={product.productId} />
             ))}
         </Grid>

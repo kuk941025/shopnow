@@ -7,6 +7,7 @@ import { Provider } from "react-redux";
 import { configureStore } from "./store";
 import { getFavorites } from "./pages/favorites/FavoritesActions";
 
+
 const theme = createMuiTheme({
   typography: {
     fontFamily: [
