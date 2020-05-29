@@ -4,6 +4,7 @@ import settingsReducer from "./pages/settings/SettingsReducer";
 import recommendsReducer from "./pages/recommends/RecommendsReducer";
 import favoritesReducer from "./pages/favorites/FavoritesReducer";
 import searchReducer from "./pages/search/SearchReducer";
+import snackReducer from "./layouts/snackbar/SnackReducer";
 import { setUserData, getCategories, categoryNotPrecached } from "./pages/settings/SettingsActions";
 
 export const configureStore = () => {
@@ -14,7 +15,8 @@ export const configureStore = () => {
             settings: settingsReducer,
             recommends: recommendsReducer,
             favorite: favoritesReducer,
-            search: searchReducer
+            search: searchReducer,
+            snack: snackReducer, 
         }),
         {},
         composeEnhancers(applyMiddleware(thunk))

@@ -4,6 +4,8 @@ import Settings from "./pages/settings/Settings";
 import URLs from "./libs/urls";
 import Main from "./pages/main/Main";
 import CssBaseline from "@material-ui/core/CssBaseline";
+import Snack from "./layouts/snackbar/Snack";
+
 function App() {
   return (
     <div className="App">
@@ -18,6 +20,8 @@ function App() {
           <Route component={Main} />
         </Switch>
       </Router>
+
+      <Snack />
     </div>
   );
 }
