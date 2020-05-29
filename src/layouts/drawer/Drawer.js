@@ -29,15 +29,15 @@ const getIcon = (idx) => {
     else return <SettingsIcon />
 }
 
-const Drawer = ({ mobileOpen, history, onClick }) => {
+const urlList = [URLs.Main, URLs.Favorites, URLs.Settings];
+
+const Drawer = ({ mobileOpen, history, onClick, location }) => {
     const classes = useStyles();
     const { user_data } = useSelector(state => state.settings);
-    const onListItemClicked = (idx) => {
-        if (idx === 0) history.push(URLs.Main);
-        else if (idx === 1) history.push(URLs.Favorites);
-        else history.push(URLs.Settings);
-    }
 
+    const onListItemClicked = (idx) => {
+        history.push(urlList[idx]);
+    }
 
     const getDrawer = () => {
         return (
@@ -62,7 +62,11 @@ const Drawer = ({ mobileOpen, history, onClick }) => {
                     <Divider variant="middle" className={classes.divider} />
                     <List>
                         {localString(Strings.drawer_items).map((item, idx) => (
-                            <ListItem onClick={() => onListItemClicked(idx)} button key={item}>
+                            <ListItem
+                                className={classNames(location.pathname === urlList[idx] && classes.selected)}
+                                onClick={() => onListItemClicked(idx)}
+                                button
+                                key={item}>
                                 <ListItemIcon>{getIcon(idx)}</ListItemIcon>
                                 <ListItemText primary={item} />
                             </ListItem>
@@ -158,6 +162,14 @@ const useStyles = makeStyles(theme => ({
     },
     longChip: {
         width: (DrawerWidth - theme.spacing(7))
+    },
+    selected: {
+        "& svg": {
+            color: theme.palette.secondary.main
+        },
+        "& span": {
+            fontWeight: 600,
+        }
     }
 }))
 export default withRouter(Drawer);
