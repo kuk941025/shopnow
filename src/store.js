@@ -23,8 +23,8 @@ export const configureStore = () => {
     );
 
     let user_data = localStorage.getItem("userdata");
-    // const precached = localStorage.getItem("precached");
-    const precached = true
+    const precached = localStorage.getItem("precached");
+    // const precached = true
 
     if (user_data)
         user_data = JSON.parse(user_data);
