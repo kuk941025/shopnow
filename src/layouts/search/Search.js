@@ -9,14 +9,20 @@ import { localString } from "../../libs/utils";
 import Strings from "../../libs/strings";
 import { withRouter } from "react-router-dom";
 import URLs from "../../libs/urls";
-
+import { useDispatch } from "react-redux";
+import { showMessage } from "../snackbar/SnackAction";
 const Search = ({ history }) => {
     const classes = useStyles();
+    const dispatch = useDispatch();
     const [keyword, setKeyword] = useState('');
 
     const handleSubmit = e => {
         if (e) e.preventDefault();
 
+        if (keyword === ""){
+            dispatch(showMessage(localString(Strings.search_no_keyword)));
+            return;
+        }
         history.push(`${URLs.Search}?query=${keyword}`)        
     }
     return (
