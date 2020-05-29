@@ -1,26 +1,33 @@
-import React from 'react'
+import React, { useState } from 'react'
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Strings from "../../libs/strings";
-import { localString } from "../../libs/utils";
+import { localString, langCode } from "../../libs/utils";
 import DialogContent from "@material-ui/core/DialogContent";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import InputLabel from "@material-ui/core/InputLabel";
 import FormControl from "@material-ui/core/FormControl";
 import Button from "@material-ui/core/Button";
+import { MainClickType } from "../../pages/main/MainConst";
 
-
-const LangDialog = ({ open, onClose }) => {
+const LangDialog = ({ open, handleClick }) => {
     const classes = useStyles();
+    const [lang, setLang] = useState(langCode);
+
+
+    const handleChange = e => {
+        setLang(e.target.value);
+    }
+
     return (
         <Dialog
             fullWidth
             maxWidth="xs"
             open={open}
-            onClose={onClose}
+            onClose={() => handleClick({ type: MainClickType.closeLang })}
         >
             <DialogTitle>
                 {localString(Strings.lang_title)}
@@ -28,9 +35,9 @@ const LangDialog = ({ open, onClose }) => {
             <DialogContent className={classes.root}>
                 <FormControl className={classes.formControl}>
                     <InputLabel>{localString(Strings.lang_language)}</InputLabel>
-                    <Select>
-                        {localString(Strings.lang_languages).map(language => (
-                            <MenuItem key={language} value={language}>
+                    <Select onChange={handleChange} value={lang}>
+                        {localString(Strings.lang_languages).map((language, idx) => (
+                            <MenuItem key={language} value={idx}>
                                 {language}
                             </MenuItem>
                         ))}
@@ -38,10 +45,14 @@ const LangDialog = ({ open, onClose }) => {
                 </FormControl>
             </DialogContent>
             <DialogActions>
-                <Button variant="contained" disableElevation >
+                <Button variant="contained" disableElevation onClick={() => handleClick({ type: MainClickType.closeLang })}>
                     {localString(Strings.lang_cancel)}
                 </Button>
-                <Button variant="contained" disableElevation color="primary" >
+                <Button
+                    variant="contained"
+                    disableElevation
+                    color="primary"
+                    onClick={() => handleClick({ type: MainClickType.updateLang, data: lang })}>
                     {localString(Strings.lang_confirm)}
                 </Button>
             </DialogActions>

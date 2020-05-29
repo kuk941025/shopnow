@@ -3,4 +3,6 @@ export const MainClickType = {
     lang: "MainLangDialog",
     noti: "MainNotification",
     closeNoti: "MainCloseNotification", 
+    updateLang: "MainUpdateLang",
+    closeLang: "MainCloseLang", 
 }

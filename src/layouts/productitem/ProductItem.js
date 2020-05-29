@@ -34,13 +34,11 @@ const ProductItem = ({ onClick, onFavClick, data, favorited = false }) => {
                     <>
                         <CardActionArea onClick={onClick}>
                             <div variant="body1" className={classes.imgRoot}>
-
                                 <img
                                     onError={(event) => event.target.setAttribute("src", NoImg)}
                                     alt="product_img"
                                     className={classes.img}
                                     src={data.image} />
-
 
                                 <Typography className={classes.titleRoot} >
                                     {data.title}

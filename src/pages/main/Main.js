@@ -14,7 +14,7 @@ import HistoryPopper from "../../layouts/history_popper/HistoryPopper";
 import { MainClickType } from "./MainConst";
 import { Redirect } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { localString } from "../../libs/utils";
+import { localString, setLangCode } from "../../libs/utils";
 import Strings from "../../libs/strings";
 
 
@@ -61,6 +61,12 @@ const Main = ({ location, history }) => {
             case MainClickType.closeNoti:
                 setAnchorEl(null);
                 break;
+            case MainClickType.closeLang:
+                setLangDialog(false);
+                break;
+            case MainClickType.updateLang:
+                setLangCode(action.data);
+                break;
             default:
                 break;
         }
@@ -79,7 +85,7 @@ const Main = ({ location, history }) => {
             </main>
 
             <HistoryPopper onClick={handleClick} anchorEl={anchorEl} />
-            <LangDialog open={langDialog} onClose={() => setLangDialog(false)} />
+            <LangDialog open={langDialog} handleClick={handleClick} />
         </div>
     )
 }
