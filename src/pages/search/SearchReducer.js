@@ -1,16 +1,17 @@
 import { SearchActionType } from "./SearchActions";
 
 const initState = {
-    results: []
+    results: [],
+    completed: false
 }
 
 const searchReducer = (state = initState, action) => {
     switch (action.type){
         case SearchActionType.search:
-            console.log(action.data);
             return {
                 ...state,
-                results: action.data, 
+                results: action.data,
+                completed: true 
             }
         default: 
             return state;

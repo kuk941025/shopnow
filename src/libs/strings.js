@@ -16,7 +16,8 @@ const Strings = {
         "5개 이상의 카테고리를 선택해주세요."],
 
     search_placeholder: ["Search", "검색"],
-
+    search_not_found: ["No items are found", "검색결과가 없습니다."],
+    
     drawer_items: [
         ["Recommends", "Favorites", "Settings"],
         ["추천", "즐겨찾기", "설정"]
