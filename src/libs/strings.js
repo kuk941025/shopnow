@@ -30,6 +30,7 @@ const Strings = {
 
     detail_back: ["Back", "뒤로가기"],
     detail_favorite: ["Favorite", "즐겨찾기"],
+    detail_unfavorite: ["Unfavorite", "즐겨찾기 취소"],
     detail_next_items: ["Next Items", "다음 아이템"],
     detail_general_product: ["General Product", "일반상품"],
     detail_used_product: ["Used Product", "중고상품"],

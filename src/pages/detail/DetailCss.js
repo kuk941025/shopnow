@@ -89,6 +89,7 @@ const DetailCss = (theme) => ({
     btnFav: {
         flex: 1,
         borderRadius: 0, 
+        height: 40, 
     },
     btnDrawerFixed: {
         position: 'fixed',

@@ -19,6 +19,7 @@ import ErrorPage from "../error_page/ErrorPage";
 import Hidden from "@material-ui/core/Hidden";
 import NavigateBeforeIcon from "@material-ui/icons/NavigateBefore";
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
+import { addFavorite, removeFavorite } from "../favorites/FavoritesActions";
 
 const DetailErrorType = {
     invalidId: "DetailInvalidProducTID",
@@ -26,12 +27,15 @@ const DetailErrorType = {
 }
 const DetailClickType = {
     back: "DetailBackClicked",
+    fav: "DetailFavClicked"
 }
 const Detail = ({ location, history }) => {
     const classes = useStyles();
     const theme = useTheme();
     const dispatch = useDispatch();
     const recommendState = useSelector(state => state.recommends);
+    const favoriteState = useSelector(state => state.favorite);
+    const [isFav, setFav] = useState(false);
     const [drawerVisible, setDrawerVisible] = useState(false);
     const [detailData, setDetailData] = useState({
         product: null,
@@ -55,6 +59,16 @@ const Detail = ({ location, history }) => {
         updateLayout();
         return () => window.removeEventListener('resize', updateLayout);
     }, [theme])
+
+    useEffect(() => {
+        if (!favoriteState.completed) return;
+        if (!detailData.product) return;
+
+        const fidx = favoriteState.favorites.findIndex(favorite => favorite.productId === detailData.product.productId);
+
+        if (fidx >= 0) setFav(true);
+        else setFav(false);
+    }, [favoriteState, detailData])
 
     useEffect(() => {
         let { data, err, completed } = recommendState;
@@ -135,6 +149,14 @@ const Detail = ({ location, history }) => {
             case DetailClickType.back:
                 history.goBack();
                 break;
+            case DetailClickType.fav:
+                if (isFav) 
+                    dispatch(removeFavorite(detailData.product));
+                else 
+                    dispatch(addFavorite(detailData.product));
+                
+
+                break;
             default:
                 break;
         }
@@ -174,14 +196,11 @@ const Detail = ({ location, history }) => {
 
     return (
         <Grid container spacing={2} className={classes.root}>
-
             <Grid
                 item
                 className={classNames(classes.item, classes.itemImg)}
                 xs={12}
                 md={6}>
-
-
                 <img
                     alt="product_detail"
                     className={classes.img}
@@ -267,8 +286,9 @@ const Detail = ({ location, history }) => {
                                     color="primary"
                                     className={classes.btnFav}
                                     variant="contained"
+                                    onClick={() => handleClick({ type: DetailClickType.fav })}
                                     disableElevation>
-                                    {localString(Strings.detail_favorite)}
+                                    {localString(isFav ? Strings.detail_unfavorite : Strings.detail_favorite)}
                                 </Button>
                             </div>
 
@@ -284,10 +304,11 @@ const Detail = ({ location, history }) => {
                                 </Button>
                                 <Button
                                     color="primary"
+                                    onClick={() => handleClick({ type: DetailClickType.fav })}
                                     className={classes.btnFav}
                                     variant="contained"
                                     disableElevation>
-                                    {localString(Strings.detail_favorite)}
+                                    {localString(isFav ? Strings.detail_unfavorite : Strings.detail_favorite)}
                                 </Button>
                             </div>
 
@@ -305,9 +326,10 @@ const Detail = ({ location, history }) => {
                         <Button
                             color="primary"
                             fullWidth
+                            onClick={() => handleClick({ type: DetailClickType.fav })}
                             className={classNames(classes.btnFav)}
                             variant="contained" >
-                            {localString(Strings.detail_favorite)}
+                            {localString(isFav ? Strings.detail_unfavorite : Strings.detail_favorite)}
                         </Button>
                     </div>
 
