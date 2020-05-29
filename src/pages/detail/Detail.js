@@ -74,7 +74,7 @@ const Detail = ({ location, history }) => {
         const { product_id } = qs.parse(location.search);
         const { data, err, completed } = recommendState;
 
-        if (detailData.product && detailData.product.productId === product_id){
+        if (detailData.product && detailData.product.productId === product_id) {
             //if data is already loaded, end the function
             return;
         }
@@ -95,30 +95,35 @@ const Detail = ({ location, history }) => {
         }
         if (completed && favoriteState.completed) {
             //if error has occured from retrieving recommenddata from server
-            if (err.value) {
+            //look item in favorite list, if does not exist in favorite then display error
+            const fIdx = favoriteState.favorites.findIndex(favorite => favorite.productId === product_id);
+            if (err.value && fIdx < 0) {
                 setDetailData(prev => ({
-                    ...prev, 
+                    ...prev,
                     err: {
                         value: true,
                         msg: err.msg,
                     },
-                    loaded: true 
+                    loaded: true
                 }))
             }
-            //if no error, find selected product from given product id
+            //if no error or exist in favorite, find selected product from given product id
             else {
                 const recommendData = recommendState.data;
                 try {
-                    //first find item in recommend data, if not found find in favorite data
+                    //if found in favorite item, select the favorite item
+                    //if not found, find in recommendData
                     let selected = null;
-                    let selectedIdx = recommendData.findIndex(item => item.productId === product_id);
-
-                    if (selectedIdx >= 0)
-                        selected = recommendData[selectedIdx];
-                    else {
-                        selectedIdx = favoriteState.favorites.findIndex(item => item.productId === product_id);
-                        selected = favoriteState.favorites[selectedIdx]; 
+                    let selectedIdx = fIdx;
+                    if (fIdx < 0) {
+                        selectedIdx = recommendData.findIndex(item => item.productId === product_id);
+                        selected = recommendData[selectedIdx]
                     }
+                    else {
+                        selected = favoriteState.favorites[selectedIdx];
+                    }
+
+
                     let productTypeString = "";
 
                     const productType = Number(selected.productType);
@@ -145,7 +150,7 @@ const Detail = ({ location, history }) => {
                 } catch (err) {
                     //if no product id is found from recommended data
                     setDetailData(prev => ({
-                        ...prev, 
+                        ...prev,
                         err: {
                             value: true,
                             msg: DetailErrorType.invalidId
