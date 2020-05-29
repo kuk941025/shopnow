@@ -28,7 +28,7 @@ const Search = ({ location, history }) => {
             return;
         }
         dispatch(search(query));
-    }, [location])
+    }, [location, dispatch])
 
     useEffect(() => {
         //initalized favlist with results.favorited value

@@ -3,7 +3,7 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import AppBar from "@material-ui/core/AppBar";
 import MToolbar from "@material-ui/core/Toolbar";
 import IconButton from '@material-ui/core/IconButton';
-import NotiIcon from "@material-ui/icons/Notifications";
+// import NotiIcon from "@material-ui/icons/Notifications";
 import LangIcon from "@material-ui/icons/Language";
 import MenuIcon from '@material-ui/icons/Menu';
 import { DrawerWidth } from "../../libs/const";

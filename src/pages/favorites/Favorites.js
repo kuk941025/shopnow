@@ -24,7 +24,7 @@ const Favorites = ({ history }) => {
 
     useEffect(() => {
         dispatch(getFavorites());
-    }, [])
+    }, [dispatch])
 
     const handleFavorite = product => {
         dispatch(removeFavorite(product));

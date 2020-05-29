@@ -35,7 +35,7 @@ const Settings = ({ history }) => {
         if (precached) {
             dispatch(getCategories());
         }
-    }, [])
+    }, [dispatch, precached])
 
     //Init user data if exists
     useEffect(() => {
