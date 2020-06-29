@@ -33,9 +33,9 @@ const Settings = ({ history }) => {
 
     useEffect(() => {
         //if not precached, getCategories is called in store.js when receives a message from the service worker
-        if (precached) {
-            dispatch(getCategories());
-        }
+        
+        dispatch(getCategories());
+        
     }, [dispatch, precached])
 
     //Init user data if exists
